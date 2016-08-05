@@ -223,6 +223,7 @@ Cave.prototype.moveHunter = function(aDirection) {
  */
 Cave.prototype.toString = function() {
     var hunterCell = this.find("Hunter");
+    var moves = this.getHunterMoves();
     var yetiCell = -1; // this.find("Yeti");
     var caveRepresentation = "";
 
@@ -245,6 +246,12 @@ Cave.prototype.toString = function() {
 
     caveRepresentation += "\n\n";
     caveRepresentation += this.getRoomDescription();
+    caveRepresentation += "\n\n";
+
+    caveRepresentation += "The hunter may move in these directions. ";
+    for (var move in moves) {
+        caveRepresentation += move + " ";
+    }
     caveRepresentation += "\n\n";
 
     return caveRepresentation;
