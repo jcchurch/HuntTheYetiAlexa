@@ -1,8 +1,9 @@
 BeginGame begin game
+BeginGame begin a game
+BeginGame begin the game
 Overview overview
 HowToPlay how to play
 HowToPlay rules
-HowToPlay help 
 MoveHunter move the hunter {Direction}
 MoveHunter step towards the {Direction}
 MoveHunter walk towards the {Direction}
