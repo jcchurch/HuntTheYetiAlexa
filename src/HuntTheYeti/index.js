@@ -51,7 +51,16 @@ HuntTheYetiSkill.prototype.intentHandlers = {
 
     "ThrowSpear": function (intent, session, response) {
         this.throwSpear(intent, session, response);
-    }
+    },
+
+    "AMAZON.CancelIntent": function (intent, session, response) {
+        this.endGame(session, response);
+    },
+
+    "AMAZON.StopIntent": function (intent, session, response) {
+        this.endGame(session, response);
+    },
+
 };
 
 HuntTheYetiSkill.prototype.beginGame = function (session, response) {
@@ -59,6 +68,10 @@ HuntTheYetiSkill.prototype.beginGame = function (session, response) {
 
     response.ask("The hunter, armed with a spear, is lost in a cave. Help the hunter escape.", "");
     response.ask(this.game.reportRoomDescription(), "");
+}
+
+HuntTheYetiSkill.prototype.endGame = function (session, response) {
+    response.tell("Okay. Bye. Thanks for playing.");
 }
 
 HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
