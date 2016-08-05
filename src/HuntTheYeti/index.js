@@ -89,8 +89,7 @@ HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
     if (session.attributes.game.isPlaying()) {
         var aDirection = intent.slots.Direction.value;
         session.attributes.game.moveHunter(aDirection);
-        response.ask(session.attributes.game.reportRoomDescription(), "");
-        response.ask(session.attributes.game.reportConsequence(), "");
+        response.ask(session.attributes.game.reportRoomDescription() +" "+ session.attributes.game.reportConsequence(), "");
     }
     else {
         response.tell("The game is over.");
