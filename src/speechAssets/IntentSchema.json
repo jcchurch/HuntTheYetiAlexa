@@ -1,0 +1,31 @@
+{
+  "intents": [
+    {
+      "intent": "HowToPlay"
+    },
+    {
+      "intent": "Overview"
+    },
+    {
+      "intent": "BeginGame"
+    },
+    {
+      "intent": "MoveHunter",
+      "slots": [
+        {
+          "name": "Direction",
+          "type": "DIRECTION"
+        }
+      ]
+    },
+    {
+      "intent": "ThrowSpear",
+      "slots": [
+        {
+          "name": "Direction",
+          "type": "DIRECTION"
+        }
+      ]
+    }
+  ]
+}

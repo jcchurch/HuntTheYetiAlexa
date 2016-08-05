@@ -1,0 +1,26 @@
+BeginGame begin game
+Overview overview
+HowToPlay how to play
+HowToPlay rules
+HowToPlay help 
+MoveHunter move the hunter {Direction}
+MoveHunter step towards the {Direction}
+MoveHunter walk towards the {Direction}
+MoveHunter walk {Direction}
+MoveHunter move {Direction}
+MoveHunter step {Direction}
+MoveHunter go {Direction}
+MoveHunter {Direction}
+ThrowSpear throw the spear {Direction}
+ThrowSpear throw a spear {Direction}
+ThrowSpear throw my spear {Direction}
+ThrowSpear throw {Direction}
+ThrowSpear launch the spear {Direction}
+ThrowSpear launch a spear {Direction}
+ThrowSpear launch my spear {Direction}
+ThrowSpear launch {Direction}
+ThrowSpear hurl the spear {Direction}
+ThrowSpear hurl a spear {Direction}
+ThrowSpear hurl my spear {Direction}
+ThrowSpear hurl {Direction}
+ThrowSpear attack {Direction}
