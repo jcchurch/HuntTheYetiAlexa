@@ -71,8 +71,9 @@ HuntTheYetiSkill.prototype.intentHandlers = {
 HuntTheYetiSkill.prototype.beginGame = function (session, response) {
     session.attributes.game = new HuntTheYetiGame();
 
-    response.ask("The hunter, armed with a spear, is lost in a cave. Help the hunter escape.", "");
-    response.ask(session.attributes.game.reportRoomDescription(), "");
+    response.ask("The hunter, armed with a spear, is lost in a cave. Help the hunter escape. " +
+                 session.attributes.game.reportRoomDescription(),
+                 session.attributes.game.reportRoomDescription());
 }
 
 HuntTheYetiSkill.prototype.endGame = function (session, response) {
