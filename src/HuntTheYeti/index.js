@@ -58,8 +58,12 @@ HuntTheYetiSkill.prototype.intentHandlers = {
     },
 
     "AMAZON.StopIntent": function (intent, session, response) {
-        this.endGame(session, response);
+        this.tellHowToPlay(session, response);
     },
+
+    "AMAZON.HelpIntent": function (intent, session, response) {
+        this.endGame(session, response);
+    }
 
 };
 
