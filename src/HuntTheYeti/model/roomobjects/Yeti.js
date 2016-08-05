@@ -1,27 +1,27 @@
 var RoomObject = require('./RoomObject');
-var WumpusSmell = require('./WumpusSmell');
+var YetiSmell = require('./YetiSmell');
 
-var Wumpus = function() {
+var Yeti = function() {
     RoomObject.call(this);
 };
 
-Wumpus.prototype = Object.create(RoomObject.prototype);
-Wumpus.prototype.constructor = RoomObject;
+Yeti.prototype = Object.create(RoomObject.prototype);
+Yeti.prototype.constructor = RoomObject;
 
-Wumpus.prototype.getEffect = function() {
-    return new WumpusSmell();
+Yeti.prototype.getEffect = function() {
+    return new YetiSmell();
 };
 
-Wumpus.prototype.getName = function() {
-    return "Wumpus";
+Yeti.prototype.getName = function() {
+    return "Yeti";
 };
 
-Wumpus.prototype.getDescription = function() {
-    return "The impressive Wumpus attacks the hunter!";
+Yeti.prototype.getDescription = function() {
+    return "The impressive Yeti attacks the hunter!";
 };
 
-Wumpus.prototype.getConsequence = function() {
+Yeti.prototype.getConsequence = function() {
     return "death";
 };
 
-module.exports = Wumpus;
+module.exports = Yeti;

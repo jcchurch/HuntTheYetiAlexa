@@ -1,16 +1,15 @@
 var Direction = require('./Direction');
-var RoomObject = require('./roomobjects/RoomObject');
 var Hunter = require('./roomobjects/Hunter');
 var Bat = require('./roomobjects/Bat');
 var Pit = require('./roomobjects/Pit');
-var Wumpus = require('./roomobjects/Wumpus');
+var Yeti = require('./roomobjects/Yeti');
 
 /**
- * Creates the cave in which the player hunts the Wumpus.
+ * Creates the cave in which the player hunts the Yeti.
  * 
  * @precondition none
  * @postcondition the game board is initialized with bats, pits, and a
- *                single Wumpus.
+ *                single Yeti.
  */
 function Cave() {
     this.BAT_COUNT = 2;
@@ -162,7 +161,7 @@ Cave.prototype.getRow = function(cell) {
 
 /**
  * Launches a spear in a specified direction. The spear will either hit a 
- * Wumpus (and returns true) or a wall (and returns false). It's up to the
+ * Yeti (and returns true) or a wall (and returns false). It's up to the
  * game controller to decide if this is the end of the game.
  * 
  * @precondition none
@@ -170,13 +169,13 @@ Cave.prototype.getRow = function(cell) {
  * 
  * @param aDirection
  *            the direction in which the spear is thrown
- * @return true if a Wumpus is hit, false otherwise
+ * @return true if a Yeti is hit, false otherwise
  */
 Cave.prototype.launchSpear = function(aDirection) {
     var spearCell = this.find("Hunter");
     var spearRow = this.getRow(spearCell);
     var spearCol = this.getCol(spearCell);
-    var wumpusCell = this.find("Wumpus");
+    var yetiCell = this.find("Yeti");
 
     while (spearCell != -1) {
         spearCell = this.determineNextCell(aDirection, spearRow, spearCol);
@@ -185,7 +184,7 @@ Cave.prototype.launchSpear = function(aDirection) {
             spearRow = this.getRow(spearCell);
             spearCol = this.getCol(spearCell);
 
-            if (wumpusCell == this.getCell(spearRow, spearCol)) {
+            if (yetiCell == this.getCell(spearRow, spearCol)) {
                 return true;
             }
         }
@@ -224,7 +223,7 @@ Cave.prototype.moveHunter = function(aDirection) {
  */
 Cave.prototype.toString = function() {
     var hunterCell = this.find("Hunter");
-    var wumpusCell = -1; // this.find("Wumpus");
+    var yetiCell = -1; // this.find("Yeti");
     var caveRepresentation = "";
 
     for (var row = 0; row < this.HEIGHT; row++) {
@@ -234,7 +233,7 @@ Cave.prototype.toString = function() {
             var cell = this.getCell(row, col);
             if (cell == hunterCell) {
                 caveRepresentation += " H";
-            } else if (cell == wumpusCell) {
+            } else if (cell == yetiCell) {
                 caveRepresentation += " W";
             } else {
                 caveRepresentation += " ~";
@@ -384,7 +383,7 @@ Cave.prototype.initCaveObjects = function() {
         this.rooms[permutations.shift()].push(new Pit());
     }
 
-    this.rooms[permutations.shift()].push(new Wumpus());
+    this.rooms[permutations.shift()].push(new Yeti());
 
     this.safeRooms = permutations;
 

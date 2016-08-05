@@ -1,38 +1,38 @@
 var APP_ID = "amzn1.ask.skill.cd76cca4-65d0-4df4-994e-49430b7ed7ed";
 
 var AlexaSkill = require('./AlexaSkill');
-var HuntTheWumpusGame = require('./controller/HuntTheWumpusGame');
+var HuntTheYetiGame = require('./controller/HuntTheYetiGame');
 
 /**
- * HuntTheWumpusSkill is a child of AlexaSkill.
+ * HuntTheYetiSkill is a child of AlexaSkill.
  */
-var HuntTheWumpusSkill = function () {
+var HuntTheYetiSkill = function () {
     AlexaSkill.call(this, APP_ID);
     this.game = null;
 };
 
 // Extend AlexaSkill
-HuntTheWumpusSkill.prototype = Object.create(AlexaSkill.prototype);
-HuntTheWumpusSkill.prototype.constructor = HuntTheWumpusSkill;
+HuntTheYetiSkill.prototype = Object.create(AlexaSkill.prototype);
+HuntTheYetiSkill.prototype.constructor = HuntTheYetiSkill;
 
-HuntTheWumpusSkill.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
-    console.log("HuntTheWumpusSkill onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-    var speechOutput = "Welcome to Hunt the Wumpus. Say 'Begin Game' to begin to the game. Say 'How to Play' to learn how to play the game. Or say 'Overview' for an overview of Hunt the Wumpus.";
-    var repromptOutput = "I'm not sure what you mean. Say 'Begin Game' to begin to the game. Say 'How to Play' to learn how to play the game. Or say 'Overview' for an overview of Hunt the Wumpus.";
+HuntTheYetiSkill.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
+    console.log("HuntTheYetiSkill onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
+    var speechOutput = "Welcome to Hunt the Yeti. Say 'Begin Game' to begin to the game. Say 'How to Play' to learn how to play the game. Or say 'Overview' for an overview of Hunt the Yeti.";
+    var repromptOutput = "I'm not sure what you mean. Say 'Begin Game' to begin to the game. Say 'How to Play' to learn how to play the game. Or say 'Overview' for an overview of Hunt the Yeti.";
     response.ask(speechOutput, repromptOutput);
 };
 
-HuntTheWumpusSkill.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequest, session) {
-    console.log("HuntTheWumpusSkill onSessionStarted requestId: " + sessionStartedRequest.requestId
+HuntTheYetiSkill.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequest, session) {
+    console.log("HuntTheYetiSkill onSessionStarted requestId: " + sessionStartedRequest.requestId
         + ", sessionId: " + session.sessionId);
 };
 
-HuntTheWumpusSkill.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, session) {
+HuntTheYetiSkill.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, session) {
     console.log("HelloWorld onSessionEnded requestId: " + sessionEndedRequest.requestId
         + ", sessionId: " + session.sessionId);
 };
 
-HuntTheWumpusSkill.prototype.intentHandlers = {
+HuntTheYetiSkill.prototype.intentHandlers = {
     "HowToPlay": function (intent, session, response) {
         this.tellHowToPlay(session, response);
     },
@@ -54,14 +54,14 @@ HuntTheWumpusSkill.prototype.intentHandlers = {
     }
 };
 
-HuntTheWumpusSkill.prototype.beginGame = function (session, response) {
-    this.game = new HuntTheWumpusGame();
+HuntTheYetiSkill.prototype.beginGame = function (session, response) {
+    this.game = new HuntTheYetiGame();
 
     response.ask("The hunter, armed with a spear, is lost in a cave. Help the hunter escape.", "");
     response.ask(this.game.reportRoomDescription(), "");
 }
 
-HuntTheWumpusSkill.prototype.moveHunter = function (intent, session, response) {
+HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
     if (this.game == null) {
         response.ask("To start a game, say 'Begin Game'.", "");
         return;
@@ -78,7 +78,7 @@ HuntTheWumpusSkill.prototype.moveHunter = function (intent, session, response) {
     }
 }
 
-HuntTheWumpusSkill.prototype.throwSpear = function (intent, session, response) {
+HuntTheYetiSkill.prototype.throwSpear = function (intent, session, response) {
     if (this.game == null) {
         response.ask("To start a game, say 'Begin Game'.", "");
         return;
@@ -94,19 +94,19 @@ HuntTheWumpusSkill.prototype.throwSpear = function (intent, session, response) {
     }
 }
 
-HuntTheWumpusSkill.prototype.tellHowToPlay = function (session, response) {
-    var speechOutput = "You move the hunter by saying 'move north' for example to move the hunter north. You can say any of the four cardinal directions (north, south, east, or west) to move. Once you believe that you know where the wumpus is located, you can throw your only spear by saying 'throw the spear north' (or any cardinal direction). Once you throw the spear, the game is over.";
+HuntTheYetiSkill.prototype.tellHowToPlay = function (session, response) {
+    var speechOutput = "You move the hunter by saying 'move north' for example to move the hunter north. You can say any of the four cardinal directions (north, south, east, or west) to move. Once you believe that you know where the Yeti is located, you can throw your only spear by saying 'throw the spear north' (or any cardinal direction). Once you throw the spear, the game is over.";
     response.ask(speechOutput, "");
 };
 
-HuntTheWumpusSkill.prototype.tellOverview = function (session, response) {
-    var speechOutput = "In the game Hunt The Wumpus, you are a hunter, armed with a single spear, in a dark five by five room cave. There are two bats, two open pits, and a terrible Wumpus. You begin your adventure in a safe room of the cave. Your goal is to kill the Wumpus with your single spear. Beware! If you throw the spear and miss, you lose.";
+HuntTheYetiSkill.prototype.tellOverview = function (session, response) {
+    var speechOutput = "In the game Hunt The Yeti, you are a hunter, armed with a single spear, in a dark five by five room cave. There are two bats, two open pits, and a terrible Yeti. You begin your adventure in a safe room of the cave. Your goal is to kill the Yeti with your single spear. Beware! If you throw the spear and miss, you lose.";
     response.ask(speechOutput, "");
 };
 
 // Create the handler that responds to the Alexa Request.
 exports.handler = function (event, context) {
     // Create an instance of the HelloWorld skill.
-    var huntTheWumpus = new HuntTheWumpusSkill();
-    huntTheWumpus.execute(event, context);
+    var huntTheYeti = new HuntTheYetiSkill();
+    huntTheYeti.execute(event, context);
 };

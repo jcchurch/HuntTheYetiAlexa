@@ -1,43 +1,43 @@
 var Cave = require("../model/Cave");
 
-function HuntTheWumpusGame() {
+function HuntTheYetiGame() {
     this.cave = new Cave();
     this.hasSpear = true;
-    this.deadWumpus = false;
+    this.deadYeti = false;
     this.consequence = "";
 }
 
-HuntTheWumpusGame.prototype.isPlaying = function () {
-    return this.hasSpear && !this.deadWumpus && this.consequence != "death";
+HuntTheYetiGame.prototype.isPlaying = function () {
+    return this.hasSpear && !this.deadYeti && this.consequence != "death";
 }
 
-HuntTheWumpusGame.prototype.moveHunter = function (aDirection) {
+HuntTheYetiGame.prototype.moveHunter = function (aDirection) {
     this.cave.moveHunter(aDirection);
     this.consequence = this.cave.activateConsequence();
 }
 
-HuntTheWumpusGame.prototype.launchSpear = function (aDirection) {
+HuntTheYetiGame.prototype.launchSpear = function (aDirection) {
     this.hasSpear = false;
-    this.deadWumpus = this.cave.launchSpear(aDirection);
+    this.deadYeti = this.cave.launchSpear(aDirection);
     this.consequence = this.cave.activateConsequence();
 }
 
-HuntTheWumpusGame.prototype.reportRoomDescription = function () {
+HuntTheYetiGame.prototype.reportRoomDescription = function () {
     return this.cave.getRoomDescription();
 }
 
-HuntTheWumpusGame.prototype.reportConsequence = function () {
+HuntTheYetiGame.prototype.reportConsequence = function () {
     if (this.consequence == "death") {
         return "The hunter has died. The game is over.";
     } else {
-        if (this.deadWumpus) {
-            return "The spear hits the wumpus! The wumpus falls over dead and the hunter lives! The game is over. You win!";
+        if (this.deadYeti) {
+            return "The spear hits the yeti! The yeti falls over dead and the hunter lives! The game is over. You win!";
         } else {
             if (!this.hasSpear) {
-                return "The hunter missed the wumpus and is now defenseless. The game is over.";
+                return "The hunter missed the yeti and is now defenseless. The game is over.";
             }
         }
     }
 }
 
-module.exports = HuntTheWumpusGame;
+module.exports = HuntTheYetiGame;
