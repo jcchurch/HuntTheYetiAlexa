@@ -8,7 +8,6 @@ var HuntTheYetiGame = require('./controller/HuntTheYetiGame');
  */
 var HuntTheYetiSkill = function () {
     AlexaSkill.call(this, APP_ID);
-    this.game = null;
 };
 
 // Extend AlexaSkill
@@ -16,6 +15,8 @@ HuntTheYetiSkill.prototype = Object.create(AlexaSkill.prototype);
 HuntTheYetiSkill.prototype.constructor = HuntTheYetiSkill;
 
 HuntTheYetiSkill.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
+    session.attributes.game = null;
+
     console.log("HuntTheYetiSkill onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
     var speechOutput = "Welcome to Hunt the Yeti. Say 'Begin Game' to begin to the game. Say 'How to Play' to learn how to play the game. Or say 'Overview' for an overview of Hunt the Yeti.";
     var repromptOutput = "I'm not sure what you mean. Say 'Begin Game' to begin to the game. Say 'How to Play' to learn how to play the game. Or say 'Overview' for an overview of Hunt the Yeti.";
@@ -68,10 +69,10 @@ HuntTheYetiSkill.prototype.intentHandlers = {
 };
 
 HuntTheYetiSkill.prototype.beginGame = function (session, response) {
-    this.game = new HuntTheYetiGame();
+    session.attributes.game = new HuntTheYetiGame();
 
     response.ask("The hunter, armed with a spear, is lost in a cave. Help the hunter escape.", "");
-    response.ask(this.game.reportRoomDescription(), "");
+    response.ask(session.attributes.game.reportRoomDescription(), "");
 }
 
 HuntTheYetiSkill.prototype.endGame = function (session, response) {
@@ -79,16 +80,16 @@ HuntTheYetiSkill.prototype.endGame = function (session, response) {
 }
 
 HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
-    if (this.game == null) {
+    if (session.attributes.game == null) {
         response.ask("To start a game, say 'Begin Game'.", "");
         return;
     }
 
-    if (this.game.isPlaying()) {
+    if (session.attributes.game.isPlaying()) {
         var aDirection = intent.slots.Direction.value;
-        this.game.moveHunter(aDirection);
-        response.ask(this.game.reportRoomDescription(), "");
-        response.ask(this.game.reportConsequence(), "");
+        session.attributes.game.moveHunter(aDirection);
+        response.ask(session.attributes.game.reportRoomDescription(), "");
+        response.ask(session.attributes.game.reportConsequence(), "");
     }
     else {
         response.tell("The game is over.");
@@ -96,15 +97,15 @@ HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
 }
 
 HuntTheYetiSkill.prototype.throwSpear = function (intent, session, response) {
-    if (this.game == null) {
+    if (session.attributes.game == null) {
         response.ask("To start a game, say 'Begin Game'.", "");
         return;
     }
 
-    if (this.game.isPlaying()) {
+    if (session.attributes.game.isPlaying()) {
         var aDirection = intent.slots.Direction.value;
-        this.game.moveHunter(aDirection);
-        response.ask(this.game.reportConsequence());
+        session.attributes.game.throwSpear(aDirection);
+        response.ask(session.attributes.game.reportConsequence());
     }
     else {
         response.tell("The game is over.");
