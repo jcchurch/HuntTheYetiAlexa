@@ -74,7 +74,8 @@ Cave.prototype.getHuntersRoomObjects = function() {
     var hunterCell = this.find("Hunter");
     var otherRoomObjects = [];
 
-    for (aRoomObject in this.rooms[hunterCell]) {
+    for (var j = 0; j < this.rooms[hunterCell].length; j++) {
+        var aRoomObject = this.rooms[hunterCell][j];
         if (aRoomObject.getName() != "Hunter") {
             otherRoomObjects.push(aRoomObject);
         }
@@ -270,13 +271,13 @@ Cave.prototype.getRoomDescription = function() {
     var roomDescription = "";
 
     if (this.rooms[hunterCell].length == 1) {
-        roomDescription += "The hunter does not sense anything near.\n";
+        roomDescription += "The hunter does not sense anything near. ";
     } else {
 
         for (var j = 0; j < this.rooms[hunterCell].length; j++) {
             var aRoomObject = this.rooms[hunterCell][j];
             if (aRoomObject.getName() != "Hunter") {
-                roomDescription += aRoomObject.getDescription() + "\n";
+                roomDescription += aRoomObject.getDescription() + " ";
             }
         }
     }
@@ -346,7 +347,8 @@ Cave.prototype.findHunterPosition = function(hunterCell) {
 Cave.prototype.getConsequence = function() {
     var hunterCell = this.find("Hunter");
 
-    for (aRoomObject in this.rooms[hunterCell]) {
+    for (var j = 0; j < this.rooms[hunterCell].length; j++) {
+        var aRoomObject = this.rooms[hunterCell][j];
         if (aRoomObject.getConsequence() != "") {
             return aRoomObject.getConsequence();
         }
@@ -405,7 +407,7 @@ Cave.prototype.initCaveRooms = function() {
 
 Cave.prototype.moveHunterToCell = function(hunterCell, hunterPosition, nextHunterCell) {
     var hunter = this.rooms[hunterCell].splice(hunterPosition, 1);
-    this.rooms[nextHunterCell].push(hunter);
+    this.rooms[nextHunterCell].push(hunter[0]);
 };
 
 Cave.prototype.randomPermutation = function(n) {
@@ -418,8 +420,8 @@ Cave.prototype.randomPermutation = function(n) {
 
     while (list.length > 0) {
         var randomIndex = Math.floor(Math.random() * list.length);
-        var room = list.splice(randomIndex, 1);
-        randomList.push(room);
+        var roomNumber = list.splice(randomIndex, 1);
+        randomList.push(roomNumber[0]);
     }
 
     return randomList;
