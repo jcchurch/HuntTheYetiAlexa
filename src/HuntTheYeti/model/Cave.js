@@ -1,8 +1,5 @@
 var Direction = require('./Direction');
-var Hunter = require('./roomobjects/Hunter');
-var Bat = require('./roomobjects/Bat');
-var Pit = require('./roomobjects/Pit');
-var Yeti = require('./roomobjects/Yeti');
+var RoomObjects = require('./RoomObjects');
 
 /**
  * Creates the cave in which the player hunts the Yeti.
@@ -11,30 +8,24 @@ var Yeti = require('./roomobjects/Yeti');
  * @postcondition the game board is initialized with bats, pits, and a
  *                single Yeti.
  */
-function Cave() {
+function Cave(previousCave) {
     this.BAT_COUNT = 2;
     this.PIT_COUNT = 2;
     this.HEIGHT = 5;
     this.WIDTH = 5;
-    this.rooms = [];
-    this.safeRooms = [];
 
-    this.initCaveRooms();
-    this.initCaveObjects();
-    this.initCaveEffects();
-};
+    if (previousCave === undefined) {
+        this.rooms = [];
+        this.safeRooms = [];
 
-/**
- * Returns the hunter's current cell id. Use getRow and getCol to get the
- * row and column based on this cell id.
- * 
- * @precondition none
- * @postcondition none
- * 
- * @return the hunter's current cell id
- */
-Cave.prototype.getHunterCell = function() {
-    return this.find("Hunter");
+        this.initCaveRooms();
+        this.initCaveObjects();
+        this.initCaveEffects();
+    }
+    else {
+        this.rooms = previousCave.rooms;
+        this.safeRooms = previousCave.safeRooms;
+    }
 };
 
 /**
@@ -45,14 +36,13 @@ Cave.prototype.getHunterCell = function() {
  * 
  * @return an ArrayList of valid hunter moves
  */
-Cave.prototype.getHunterMoves = function() {
-    var hunterCell = this.find("Hunter");
+Cave.prototype.getHunterMoves = function(hunterCell) {
     var hunterRow = this.getRow(hunterCell);
     var hunterCol = this.getCol(hunterCell);
 
     var validHunterMoves = [];
-
-    for (aDirection in Direction) {
+    for (var i = 0; i < Direction.Direction.length; i++) {
+        var aDirection = Direction.Direction[i];
         var nextHunterCell = this.determineNextCell(aDirection, hunterRow, hunterCol);
         if (nextHunterCell != -1) {
             validHunterMoves.push(aDirection);
@@ -60,28 +50,6 @@ Cave.prototype.getHunterMoves = function() {
     }
 
     return validHunterMoves;
-};
-
-/**
- * Returns an ArrayList of the other objects in the room with the hunter
- * 
- * @precondition none
- * @postcondition none
- * 
- * @return an ArrayList of the other objects in the room with the hunter
- */
-Cave.prototype.getHuntersRoomObjects = function() {
-    var hunterCell = this.find("Hunter");
-    var otherRoomObjects = [];
-
-    for (var j = 0; j < this.rooms[hunterCell].length; j++) {
-        var aRoomObject = this.rooms[hunterCell][j];
-        if (aRoomObject.getName() != "Hunter") {
-            otherRoomObjects.push(aRoomObject);
-        }
-    }
-
-    return otherRoomObjects;
 };
 
 /**
@@ -96,10 +64,11 @@ Cave.prototype.getHuntersRoomObjects = function() {
  * @return a code of the latest consequence
  */
 Cave.prototype.activateConsequence = function() {
-    var consequence = this.getConsequence();
+    var hunterCell = this.find("Hunter");
+    var consequence = this.getConsequence(hunterCell);
 
     if (consequence == "random_location") {
-        this.transportHunterToRandomSafeRoom();
+        this.transportHunterToRandomSafeRoom(hunterCell);
     }
 
     return consequence;
@@ -207,7 +176,7 @@ Cave.prototype.launchSpear = function(aDirection) {
  */
 Cave.prototype.moveHunter = function(aDirection) {
     var hunterCell = this.find("Hunter");
-    var hunterPosition = this.findHunterPosition(hunterCell);
+    var hunterPosition = this.rooms[hunterCell].indexOf("Hunter");
     var hunterRow = this.getRow(hunterCell);
     var hunterCol = this.getCol(hunterCell);
     var nextHunterCell = this.determineNextCell(aDirection, hunterRow, hunterCol);
@@ -224,7 +193,7 @@ Cave.prototype.moveHunter = function(aDirection) {
  */
 Cave.prototype.toString = function() {
     var hunterCell = this.find("Hunter");
-    var moves = this.getHunterMoves();
+    var moves = this.getHunterMoves(hunterCell);
     var yetiCell = -1; // this.find("Yeti");
     var caveRepresentation = "";
 
@@ -249,9 +218,9 @@ Cave.prototype.toString = function() {
     caveRepresentation += this.getRoomDescription();
     caveRepresentation += "\n\n";
 
-    caveRepresentation += "The hunter may move in these directions. ";
-    for (var move in moves) {
-        caveRepresentation += move + " ";
+    caveRepresentation += "The hunter may move ";
+    for (var i = 0; i < moves.length; i++) {
+        caveRepresentation += moves[i] + " ";
     }
     caveRepresentation += "\n\n";
 
@@ -268,18 +237,24 @@ Cave.prototype.toString = function() {
  */
 Cave.prototype.getRoomDescription = function() {
     var hunterCell = this.find("Hunter");
+    var moves = this.getHunterMoves(hunterCell);
     var roomDescription = "";
 
     if (this.rooms[hunterCell].length == 1) {
         roomDescription += "The hunter does not sense anything near. ";
     } else {
 
-        for (var j = 0; j < this.rooms[hunterCell].length; j++) {
+        for (var j = 0; j < this.rooms[hunterCell].length; j++) { 
             var aRoomObject = this.rooms[hunterCell][j];
-            if (aRoomObject.getName() != "Hunter") {
-                roomDescription += aRoomObject.getDescription() + " ";
+            if (aRoomObject != "Hunter") {
+                roomDescription += RoomObjects[aRoomObject].description + " ";
             }
         }
+    }
+
+    roomDescription += "Rooms are open ";
+    for (var i = 0; i < moves.length; i++) {
+        roomDescription += moves[i] + ", ";
     }
 
     return roomDescription;
@@ -316,41 +291,23 @@ Cave.prototype.determineNextCell = function(aDirection, row, col) {
 };
 
 Cave.prototype.find = function(toFind) {
-    var cell = -1;
+    var room = -1;
 
     for (var i = 0; i < this.rooms.length; i++) {
-        for (var j = 0; j < this.rooms[i].length; j++) {
-            var aRoomObject = this.rooms[i][j];
-            if (aRoomObject.getName() == toFind) {
-                cell = i;
-            }
+        var position = this.rooms[i].indexOf(toFind);
+        if (position != -1) {
+            room = i;
         }
     }
 
-    return cell;
+    return room;
 };
 
-Cave.prototype.findHunterPosition = function(hunterCell) {
-    var aRoom = this.rooms[hunterCell];
-    var position = 0;
-
-    for (var i = 0; i < aRoom.length; i++) {
-        var aRoomObject = aRoom[i];
-        if (aRoomObject.getName() == "Hunter") {
-            position = i;
-        }
-    }
-
-    return position;
-};
-
-Cave.prototype.getConsequence = function() {
-    var hunterCell = this.find("Hunter");
-
-    for (var j = 0; j < this.rooms[hunterCell].length; j++) {
+Cave.prototype.getConsequence = function(hunterCell) {
+    for (var j = 0; j < this.rooms[hunterCell].length; j++) { 
         var aRoomObject = this.rooms[hunterCell][j];
-        if (aRoomObject.getConsequence() != "") {
-            return aRoomObject.getConsequence();
+        if (RoomObjects[aRoomObject].consequence != "") {
+            return RoomObjects[aRoomObject].consequence;
         }
     }
 
@@ -369,7 +326,7 @@ Cave.prototype.initCaveEffects = function() {
 
         for (var j = 0; j < this.rooms[i].length; j++) {
             var aRoomObject = this.rooms[i][j];
-            var anEffect = aRoomObject.getEffect();
+            var anEffect = RoomObjects[aRoomObject].effect;
 
             if (anEffect != null) {
                 this.addEffectToRowAndColumn(row + 1, col, anEffect);
@@ -385,18 +342,18 @@ Cave.prototype.initCaveObjects = function() {
     var permutations = this.randomPermutation(this.WIDTH * this.HEIGHT);
 
     for (var i = 0; i < this.BAT_COUNT; i++) {
-        this.rooms[permutations.shift()].push(new Bat());
+        this.rooms[permutations.shift()].push("Bat");
     }
 
     for (var i = 0; i < this.PIT_COUNT; i++) {
-        this.rooms[permutations.shift()].push(new Pit());
+        this.rooms[permutations.shift()].push("Pit");
     }
 
-    this.rooms[permutations.shift()].push(new Yeti());
+    this.rooms[permutations.shift()].push("Yeti");
 
     this.safeRooms = permutations;
 
-    this.rooms[permutations[0]].push(new Hunter());
+    this.rooms[permutations[0]].push("Hunter");
 };
 
 Cave.prototype.initCaveRooms = function() {
@@ -427,9 +384,8 @@ Cave.prototype.randomPermutation = function(n) {
     return randomList;
 };
 
-Cave.prototype.transportHunterToRandomSafeRoom = function() {
-    var hunterCell = this.find("Hunter");
-    var hunterPosition = this.findHunterPosition(hunterCell);
+Cave.prototype.transportHunterToRandomSafeRoom = function(hunterCell) {
+    var hunterPosition = this.rooms[hunterCell].indexOf("Hunter");
     var safeRoom = this.getRandomSafeRoom();
 
     while (safeRoom == hunterCell) {

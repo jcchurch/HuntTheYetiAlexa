@@ -86,16 +86,20 @@ HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
         return;
     }
 
+    session.attributes.game = new HuntTheYetiGame(session.attributes.game);
+
     if (session.attributes.game.isPlaying()) {
         var aDirection = intent.slots.Direction.value;
         session.attributes.game.moveHunter(aDirection);
+
         response.ask(session.attributes.game.getRoomDescription()
                      + " "
                      + session.attributes.game.getConsequence(),
                      "I'm ready to play when you are.");
     }
-    else {
-        response.tell("The game is over.");
+
+    if (!session.attributes.game.isPlaying()) {
+        response.tell("Thanks for playing.");
     }
 };
 
@@ -105,10 +109,12 @@ HuntTheYetiSkill.prototype.throwSpear = function (intent, session, response) {
         return;
     }
 
+    session.attributes.game = new HuntTheYetiGame(session.attributes.game);
+
     if (session.attributes.game.isPlaying()) {
         var aDirection = intent.slots.Direction.value;
-        session.attributes.game.throwSpear(aDirection);
-        response.ask(session.attributes.game.getConsequence(), "I'm ready to play when you are.");
+        session.attributes.game.launchSpear(aDirection);
+        response.tell(session.attributes.game.getConsequence());
     }
     else {
         response.tell("The game is over.");

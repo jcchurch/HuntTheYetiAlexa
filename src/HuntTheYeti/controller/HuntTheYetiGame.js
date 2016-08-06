@@ -1,30 +1,43 @@
 var Cave = require("../model/Cave");
 
-function HuntTheYetiGame() {
-    this.cave = new Cave();
-    this.hasSpear = true;
-    this.deadYeti = false;
-    this.consequence = "";
-}
+var HuntTheYetiGame = function (previousGame) {
+    if (previousGame === undefined) {
+        this.cave = new Cave();
+        this.hasSpear = true;
+        this.deadYeti = false;
+        this.consequence = "";
+    }
+    else {
+        this.cave = new Cave(previousGame.cave);
+        this.hasSpear = previousGame.hasSpear;
+        this.deadYeti = previousGame.deadYeti;
+        this.consequence = previousGame.consequence;
+    }
+};
 
 HuntTheYetiGame.prototype.isPlaying = function () {
     return this.hasSpear && !this.deadYeti && this.consequence != "death";
-}
+};
 
 HuntTheYetiGame.prototype.moveHunter = function (aDirection) {
     this.cave.moveHunter(aDirection);
     this.consequence = this.cave.activateConsequence();
-}
+};
 
 HuntTheYetiGame.prototype.launchSpear = function (aDirection) {
     this.hasSpear = false;
     this.deadYeti = this.cave.launchSpear(aDirection);
     this.consequence = this.cave.activateConsequence();
-}
+};
 
 HuntTheYetiGame.prototype.getRoomDescription = function () {
-    return this.cave.getRoomDescription();
-}
+    var description = "";
+    if (this.consequence == "random_location") {
+        description += "Enormous bats have picked you up and dropped you in a different part of the cave. ";
+    }
+    description += this.cave.getRoomDescription();
+    return description;
+};
 
 HuntTheYetiGame.prototype.getConsequence = function () {
     if (this.consequence == "death") {
@@ -38,6 +51,7 @@ HuntTheYetiGame.prototype.getConsequence = function () {
             }
         }
     }
-}
+    return "";
+};
 
 module.exports = HuntTheYetiGame;
