@@ -22,11 +22,11 @@ HuntTheYetiGame.prototype.launchSpear = function (aDirection) {
     this.consequence = this.cave.activateConsequence();
 }
 
-HuntTheYetiGame.prototype.reportRoomDescription = function () {
+HuntTheYetiGame.prototype.getRoomDescription = function () {
     return this.cave.getRoomDescription();
 }
 
-HuntTheYetiGame.prototype.reportConsequence = function () {
+HuntTheYetiGame.prototype.getConsequence = function () {
     if (this.consequence == "death") {
         return "The hunter has died. The game is over.";
     } else {
