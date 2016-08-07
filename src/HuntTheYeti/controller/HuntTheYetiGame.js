@@ -33,7 +33,7 @@ HuntTheYetiGame.prototype.launchSpear = function (aDirection) {
 HuntTheYetiGame.prototype.getRoomDescription = function () {
     var description = "";
     if (this.consequence == "random_location") {
-        description += "Enormous bats have picked up and dropped the hunter in a different part of the cave. ";
+        description += "<audio src='http://james.church/gameAudio/bat_screech.mp3'/> Enormous bats have picked up and dropped the hunter in a different part of the cave. ";
     }
     description += this.cave.getRoomDescription();
     return description;
@@ -48,10 +48,10 @@ HuntTheYetiGame.prototype.getConsequence = function () {
         return "The hunter has died. The game is over.";
     } else {
         if (this.deadYeti) {
-            return "The spear hits the yeti! The yeti falls over dead and the hunter lives! The game is over. You win!";
+            return "<audio src='http://james.church/gameAudio/spear_throw.mp3'/> <audio src='http://james.church/gameAudio/yeti_death.mp3'/> The spear hits the yeti! The yeti falls over dead and the hunter lives! <audio src='http://james.church/gameAudio/victory.mp3'/> The game is over. You win!";
         } else {
             if (!this.hasSpear) {
-                return "The hunter missed the yeti and is now defenseless. The game is over.";
+                return "<audio src='http://james.church/gameAudio/spear_throw.mp3'/> <audio src='http://james.church/gameAudio/spear_hits_wall.mp3'/> The hunter missed the yeti and is now defenseless. The game is over.";
             }
         }
     }
