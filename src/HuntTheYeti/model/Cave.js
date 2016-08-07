@@ -20,6 +20,7 @@ function Cave(previousCave) {
         this.initCaveRooms();
         this.initCaveObjects();
         this.initCaveEffects();
+        this.placeHunterInRandomSafeRoom();
     }
     else {
         this.rooms = previousCave.rooms;
@@ -364,7 +365,6 @@ Cave.prototype.initCaveObjects = function() {
     }
 
     this.rooms[permutations.shift()].push("Yeti");
-    this.rooms[permutations[0]].push("Hunter");
 };
 
 Cave.prototype.initCaveRooms = function() {
@@ -396,7 +396,7 @@ Cave.prototype.randomPermutation = function(n) {
 };
 
 Cave.prototype.getSafeRooms = function() {
-    var safeRooms = []
+    var safeRooms = [];
     for (var i = 0; i < this.WIDTH * this.HEIGHT; i++) {
         if (this.rooms[i].length == 0) {
             safeRooms.push(i);
@@ -411,6 +411,12 @@ Cave.prototype.transportHunterToRandomSafeRoom = function(hunterCell) {
     var safeRoom = this.getRandomSafeRoom(safeRooms);
 
     this.moveHunterToCell(hunterCell, hunterPosition, safeRoom);
+};
+
+Cave.prototype.placeHunterInRandomSafeRoom = function() {
+    var safeRooms = this.getSafeRooms();
+    var safeRoom = this.getRandomSafeRoom(safeRooms);
+    this.rooms[safeRoom].push("Hunter");
 };
 
 module.exports = Cave;
