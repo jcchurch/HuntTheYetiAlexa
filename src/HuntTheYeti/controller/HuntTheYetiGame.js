@@ -33,7 +33,7 @@ HuntTheYetiGame.prototype.launchSpear = function (aDirection) {
 HuntTheYetiGame.prototype.getRoomDescription = function () {
     var description = "";
     if (this.consequence == "random_location") {
-        description += "Enormous bats have picked you up and dropped you in a different part of the cave. ";
+        description += "Enormous bats have picked up and dropped the hunter in a different part of the cave. ";
     }
     description += this.cave.getRoomDescription();
     return description;
