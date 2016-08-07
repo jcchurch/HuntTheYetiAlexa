@@ -70,10 +70,13 @@ HuntTheYetiSkill.prototype.intentHandlers = {
 HuntTheYetiSkill.prototype.beginGame = function (session, response) {
     session.attributes.game = new HuntTheYetiGame();
     var roomDescription = session.attributes.game.getRoomDescription();
+    var roomOpenings = session.attributes.game.getRoomOpenings();
 
-    response.ask("The hunter, armed with a spear, is lost in a cave. Help the hunter escape. " +
-                 roomDescription,
-                 roomDescription);
+    response.ask("The hunter, armed with a spear, is lost in a cave. Help the hunter escape. "
+                 + roomDescription + " "
+                 + roomOpenings
+                 ,
+                 roomOpenings);
 };
 
 HuntTheYetiSkill.prototype.endGame = function (session, response) {
@@ -92,14 +95,18 @@ HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
         var aDirection = intent.slots.Direction.value;
         session.attributes.game.moveHunter(aDirection);
 
-        response.ask(session.attributes.game.getRoomDescription()
+        if (session.attributes.game.isPlaying()) {
+            response.ask(session.attributes.game.getRoomDescription()
                      + " "
-                     + session.attributes.game.getConsequence(),
+                     + session.attributes.game.getRoomOpenings(),
                      "I'm ready to play when you are.");
+        }
     }
 
     if (!session.attributes.game.isPlaying()) {
-        response.tell("Thanks for playing.");
+        response.tell(session.attributes.game.getRoomDescription()
+                      + " "
+                      + session.attributes.game.getConsequence());
     }
 };
 

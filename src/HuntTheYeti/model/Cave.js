@@ -226,7 +226,6 @@ Cave.prototype.toString = function() {
 
     return caveRepresentation;
 };
-
 /**
  * Gets the description of the room.
  *
@@ -251,6 +250,23 @@ Cave.prototype.getRoomDescription = function() {
             }
         }
     }
+
+    return roomDescription;
+}
+
+
+/**
+ * Gets the description of the room.
+ *
+ * @precondition: none
+ * @postcondition: none
+ * 
+ * @return An English description of the room.
+ */
+Cave.prototype.getRoomOpenings = function() {
+    var hunterCell = this.find("Hunter");
+    var moves = this.getHunterMoves(hunterCell);
+    var roomDescription = "";
 
     roomDescription += "Rooms are open ";
     for (var i = 0; i < moves.length; i++) {
