@@ -73,7 +73,8 @@ HuntTheYetiSkill.prototype.beginGame = function (session, response) {
     var roomOpenings = session.attributes.game.getRoomOpenings();
 
     response.ask("The hunter, armed with a spear, is lost in a cave. Help the hunter escape. "
-                 + roomDescription + " "
+                 + roomDescription
+                 + " "
                  + roomOpenings
                  ,
                  roomOpenings);
@@ -129,7 +130,7 @@ HuntTheYetiSkill.prototype.throwSpear = function (intent, session, response) {
 };
 
 HuntTheYetiSkill.prototype.tellHowToPlay = function (session, response) {
-    var speechOutput = "You move the hunter by saying 'move north' for example to move the hunter north. You can say any of the four cardinal directions (north, south, east, or west) to move. To throw your only spear, say 'throw the spear north' (or any cardinal direction). Once you throw the spear, the game is over.";
+    var speechOutput = "You move the hunter by saying 'move north' or any of the four cardinal directions (north, south, east, or west). To throw your only spear, say 'throw the spear north' (or any cardinal direction). Once you throw the spear, the game is over.";
     response.ask(speechOutput, "I'm ready to play when you are.");
 };
 
