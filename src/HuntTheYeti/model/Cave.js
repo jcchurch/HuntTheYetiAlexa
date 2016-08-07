@@ -364,9 +364,6 @@ Cave.prototype.initCaveObjects = function() {
     }
 
     this.rooms[permutations.shift()].push("Yeti");
-
-    this.safeRooms = permutations;
-
     this.rooms[permutations[0]].push("Hunter");
 };
 
