@@ -122,12 +122,12 @@ HuntTheYetiSkill.prototype.throwSpear = function (intent, session, response) {
 };
 
 HuntTheYetiSkill.prototype.tellHowToPlay = function (session, response) {
-    var speechOutput = "You move the hunter by saying 'move north' for example to move the hunter north. You can say any of the four cardinal directions (north, south, east, or west) to move. Once you believe that you know where the Yeti is located, you can throw your only spear by saying 'throw the spear north' (or any cardinal direction). Once you throw the spear, the game is over.";
+    var speechOutput = "You move the hunter by saying 'move north' for example to move the hunter north. You can say any of the four cardinal directions (north, south, east, or west) to move. To throw your only spear, say 'throw the spear north' (or any cardinal direction). Once you throw the spear, the game is over.";
     response.ask(speechOutput, "I'm ready to play when you are.");
 };
 
 HuntTheYetiSkill.prototype.tellOverview = function (session, response) {
-    var speechOutput = "In the game Hunt The Yeti, you are a hunter, armed with a single spear, in a dark five by five room cave. There are two bats, two open pits, and a terrible Yeti. You begin your adventure in a safe room of the cave. Your goal is to kill the Yeti with your single spear. Beware! If you throw the spear and miss, you lose.";
+    var speechOutput = "In Hunt The Yeti, you are a hunter, armed with a single spear, in a dark five by five room cave. There are bats, open pits, and a terrible Yeti. Your goal is to kill the Yeti with a single spear throw.";
     response.ask(speechOutput, "I'm ready to play when you are.");
 };
 
