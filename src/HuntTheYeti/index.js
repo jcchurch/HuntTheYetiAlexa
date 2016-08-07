@@ -18,8 +18,8 @@ HuntTheYetiSkill.prototype.eventHandlers.onLaunch = function (launchRequest, ses
     session.attributes.game = null;
 
     console.log("HuntTheYetiSkill onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-    var speechOutput = "Welcome to Hunt the Yeti. Say 'Begin Game' to begin to the game. Say 'How to Play' to learn how to play the game. Or say 'Overview' for an overview of Hunt the Yeti.";
-    var repromptOutput = "Say 'Begin Game' to begin to the game. Say 'How to Play' to learn how to play the game. Or say 'Overview' for an overview of Hunt the Yeti.";
+    var speechOutput = "Welcome to Hunt the Yeti. Say 'Begin Game' or 'How to Play' or 'Overview'.";
+    var repromptOutput = "Say 'Begin Game' or 'How to Play' or 'Overview'.";
     response.ask(speechOutput, repromptOutput);
 };
 
