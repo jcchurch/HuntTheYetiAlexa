@@ -39,6 +39,10 @@ HuntTheYetiGame.prototype.getRoomDescription = function () {
     return description;
 };
 
+HuntTheYetiGame.prototype.getRoomOpenings = function () {
+    return this.cave.getRoomOpenings();
+};
+
 HuntTheYetiGame.prototype.getConsequence = function () {
     if (this.consequence == "death") {
         return "The hunter has died. The game is over.";
