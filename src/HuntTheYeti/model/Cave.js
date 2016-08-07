@@ -16,7 +16,6 @@ function Cave(previousCave) {
 
     if (previousCave === undefined) {
         this.rooms = [];
-        this.safeRooms = [];
 
         this.initCaveRooms();
         this.initCaveObjects();
@@ -24,7 +23,6 @@ function Cave(previousCave) {
     }
     else {
         this.rooms = previousCave.rooms;
-        this.safeRooms = previousCave.safeRooms;
     }
 };
 
@@ -330,8 +328,8 @@ Cave.prototype.getConsequence = function(hunterCell) {
     return "";
 };
 
-Cave.prototype.getRandomSafeRoom = function() {
-    return this.safeRooms[Math.floor(Math.random() * this.safeRooms.length)];
+Cave.prototype.getRandomSafeRoom = function(safeRooms) {
+    return safeRooms[Math.floor(Math.random() * safeRooms.length)];
 };
 
 Cave.prototype.initCaveEffects = function() {
@@ -400,13 +398,20 @@ Cave.prototype.randomPermutation = function(n) {
     return randomList;
 };
 
+Cave.prototype.getSafeRooms = function() {
+    var safeRooms = []
+    for (var i = 0; i < this.WIDTH * this.HEIGHT; i++) {
+        if (this.rooms[i].length == 0) {
+            safeRooms.push(i);
+        }
+    }
+    return safeRooms;
+};
+
 Cave.prototype.transportHunterToRandomSafeRoom = function(hunterCell) {
     var hunterPosition = this.rooms[hunterCell].indexOf("Hunter");
-    var safeRoom = this.getRandomSafeRoom();
-
-    while (safeRoom == hunterCell) {
-        safeRoom = this.getRandomSafeRoom();
-    }
+    var safeRooms = this.getSafeRooms();
+    var safeRoom = this.getRandomSafeRoom(safeRooms);
 
     this.moveHunterToCell(hunterCell, hunterPosition, safeRoom);
 };
