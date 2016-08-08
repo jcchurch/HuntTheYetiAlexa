@@ -42,6 +42,10 @@ HuntTheYetiSkill.prototype.intentHandlers = {
         this.tellOverview(session, response);
     },
 
+    "PauseGame": function (intent, session, response) {
+        this.pauseGame(session, response);
+    },
+
     "BeginGame": function (intent, session, response) {
         this.beginGame(session, response);
     },
@@ -130,6 +134,12 @@ HuntTheYetiSkill.prototype.throwSpear = function (intent, session, response) {
         response.tell("The game is over.");
     }
 };
+
+HuntTheYetiSkill.prototype.pauseGame = function (session, response) {
+    var speechOutput = "I'll wait.";
+    response.ask(speechOutput, "I'm ready to play when you are.");
+};
+
 
 HuntTheYetiSkill.prototype.tellHowToPlay = function (session, response) {
     var speechOutput = "You move the hunter by saying 'move north' or any of the four cardinal directions (north, south, east, or west). To throw your only spear, say 'throw the spear north' (or any cardinal direction). Once you throw the spear, the game is over.";
