@@ -10,6 +10,16 @@ BeginGame new game
 Overview overview
 HowToPlay how to play
 HowToPlay rules
+PauseGame delay
+PauseGame wait
+PauseGame wait a tic
+PauseGame wait a second
+PauseGame wait a moment
+PauseGame pause
+PauseGame pause for a moment
+PauseGame hold up
+PauseGame hold on
+PauseGame I need more time
 MoveHunter move the hunter {Direction}
 MoveHunter step towards the {Direction}
 MoveHunter walk towards the {Direction}
