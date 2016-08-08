@@ -1,6 +1,12 @@
+BeginGame begin
 BeginGame begin game
 BeginGame begin a game
 BeginGame begin the game
+BeginGame start
+BeginGame start game
+BeginGame start a game
+BeginGame start the game
+BeginGame new game
 Overview overview
 HowToPlay how to play
 HowToPlay rules
