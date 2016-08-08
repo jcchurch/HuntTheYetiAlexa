@@ -97,7 +97,9 @@ HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
         session.attributes.game.moveHunter(aDirection);
 
         if (session.attributes.game.isPlaying()) {
-            response.ask(session.attributes.game.getRoomDescription()
+            response.ask(aDirection
+                     + ". "
+                     + session.attributes.game.getRoomDescription()
                      + " "
                      + session.attributes.game.getRoomOpenings(),
                      "I'm ready to play when you are.");
