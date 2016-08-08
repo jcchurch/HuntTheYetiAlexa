@@ -136,7 +136,7 @@ HuntTheYetiSkill.prototype.throwSpear = function (intent, session, response) {
 };
 
 HuntTheYetiSkill.prototype.pauseGame = function (session, response) {
-    var speechOutput = "I'll wait.";
+    var speechOutput = "I'll wait. To begin a new game, say 'Begin game.' To move, say 'move' and a direction. To throw the spear, say 'throw' and a direction.";
     response.ask(speechOutput, "I'm ready to play when you are.");
 };
 
