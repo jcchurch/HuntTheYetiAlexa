@@ -255,12 +255,12 @@ Cave.prototype.getRoomDescription = function() {
 
 
 /**
- * Gets the description of the room.
+ * Builds an English description of open rooms.
  *
  * @precondition: none
  * @postcondition: none
  * 
- * @return An English description of the room.
+ * @return An English description of open rooms.
  */
 Cave.prototype.getRoomOpenings = function() {
     var hunterCell = this.find("Hunter");
