@@ -11,7 +11,7 @@ Hunt the Yeti is an intepretation of Hunt the Wumpus, a classic game for teachin
 
 ## How to play
 
-To begin the game, say "Alexa, play Hunt The Yeti", then "Begin Game".
+To begin the game, say "Alexa, launch the Yeti Hunt Game", then "Begin Game".
 
 You can move the hunter in any of the four cardinal directions: north, south, east, or west. To move, say 'move north', or 'step east', or 'go west', or simply 'south'.
 
