@@ -99,18 +99,16 @@ HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
     if (session.attributes.game.isPlaying()) {
         var aDirection = intent.slots.Direction.value;
         session.attributes.game.moveHunter(aDirection);
+    }
 
-        if (session.attributes.game.isPlaying()) {
-            response.ask(aDirection
+    if (session.attributes.game.isPlaying()) {
+        response.ask(aDirection
                      + ". "
                      + session.attributes.game.getRoomDescription()
                      + " "
                      + session.attributes.game.getRoomOpenings(),
                      "I'm ready to play when you are.");
-        }
-    }
-
-    if (!session.attributes.game.isPlaying()) {
+    } else {
         response.tell(session.attributes.game.getRoomDescription()
                       + " "
                       + session.attributes.game.getConsequence());
