@@ -165,13 +165,15 @@ Cave.prototype.launchSpear = function(aDirection) {
 /**
  * Moves the hunter in a specified direction
  * 
+ * @param aDirection
+ *            a direction (NORTH, SOUTH, EAST, WEST) to move.
+ *
  * @precondition none
  * @postcondition If the hunter has the ability to move in the specified
  *                direction, the hunter moves 1 cell in that direction. If
  *                not, there is no postcondition.
  * 
- * @param aDirection
- *            a direction (NORTH, SOUTH, EAST, WEST) to move.
+ * @return true if the hunter moves, false otherwise.
  */
 Cave.prototype.moveHunter = function(aDirection) {
     var hunterCell = this.find("Hunter");
@@ -183,6 +185,8 @@ Cave.prototype.moveHunter = function(aDirection) {
     if (nextHunterCell != -1) {
         this.moveHunterToCell(hunterCell, hunterPosition, nextHunterCell);
     }
+
+    return nextHunterCell != -1;
 };
 
 /*
