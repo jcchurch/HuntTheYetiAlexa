@@ -20,7 +20,7 @@ HuntTheYetiSkill.prototype.eventHandlers.onLaunch = function (launchRequest, ses
     console.log("HuntTheYetiSkill onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
     var speechOutput = "Welcome to Hunt the Yeti. Say 'Begin Game', or 'How to Play', or 'Overview'.";
     var repromptOutput = "Say 'Begin Game', or 'How to Play', or 'Overview'.";
-    response.ask(speechOutput, repromptOutput);
+    response.askSSML(speechOutput, repromptOutput);
 };
 
 HuntTheYetiSkill.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequest, session) {
@@ -72,7 +72,7 @@ HuntTheYetiSkill.prototype.beginGame = function (session, response) {
     var roomDescription = session.attributes.game.getRoomDescription();
     var roomOpenings = session.attributes.game.getRoomOpenings();
 
-    response.ask("The hunter, armed with a spear, is lost in a cave. Help the hunter escape. "
+    response.askSSML("The hunter, armed with a spear, is lost in a cave. Help the hunter escape. "
                  + roomDescription
                  + " "
                  + roomOpenings
@@ -81,12 +81,12 @@ HuntTheYetiSkill.prototype.beginGame = function (session, response) {
 };
 
 HuntTheYetiSkill.prototype.endGame = function (session, response) {
-    response.tell("Okay. Bye. Thanks for playing.");
+    response.tellSSML("Okay. Bye. Thanks for playing.");
 };
 
 HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
     if (session.attributes.game == null) {
-        response.ask("To start a game, say 'Begin Game'.", "To start, say 'Begin Game'.");
+        response.askSSML("To start a game, say 'Begin Game'.", "To start, say 'Begin Game'.");
         return;
     }
 
@@ -97,7 +97,7 @@ HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
         session.attributes.game.moveHunter(aDirection);
 
         if (session.attributes.game.isPlaying()) {
-            response.ask(session.attributes.game.getRoomDescription()
+            response.askSSML(session.attributes.game.getRoomDescription()
                      + " "
                      + session.attributes.game.getRoomOpenings(),
                      "I'm ready to play when you are.");
@@ -105,7 +105,7 @@ HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
     }
 
     if (!session.attributes.game.isPlaying()) {
-        response.tell(session.attributes.game.getRoomDescription()
+        response.tellSSML(session.attributes.game.getRoomDescription()
                       + " "
                       + session.attributes.game.getConsequence());
     }
@@ -113,7 +113,7 @@ HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
 
 HuntTheYetiSkill.prototype.throwSpear = function (intent, session, response) {
     if (session.attributes.game == null) {
-        response.ask("To start a game, say 'Begin Game'.", "To start, say 'Begin Game'.");
+        response.askSSML("To start a game, say 'Begin Game'.", "To start, say 'Begin Game'.");
         return;
     }
 
@@ -122,21 +122,21 @@ HuntTheYetiSkill.prototype.throwSpear = function (intent, session, response) {
     if (session.attributes.game.isPlaying()) {
         var aDirection = intent.slots.Direction.value;
         session.attributes.game.launchSpear(aDirection);
-        response.tell(session.attributes.game.getConsequence());
+        response.tellSSML(session.attributes.game.getConsequence());
     }
     else {
-        response.tell("The game is over.");
+        response.tellSSML("The game is over.");
     }
 };
 
 HuntTheYetiSkill.prototype.tellHowToPlay = function (session, response) {
     var speechOutput = "You move the hunter by saying 'move north' or any of the four cardinal directions (north, south, east, or west). To throw your only spear, say 'throw the spear north' (or any cardinal direction). Once you throw the spear, the game is over.";
-    response.ask(speechOutput, "I'm ready to play when you are.");
+    response.askSSML(speechOutput, "I'm ready to play when you are.");
 };
 
 HuntTheYetiSkill.prototype.tellOverview = function (session, response) {
     var speechOutput = "In Hunt The Yeti, you are a hunter, armed with a single spear, in a dark five by five room cave. There are bats, open pits, and a terrible Yeti. Your goal is to kill the Yeti with a single spear throw.";
-    response.ask(speechOutput, "I'm ready to play when you are.");
+    response.askSSML(speechOutput, "I'm ready to play when you are.");
 };
 
 // Create the handler that responds to the Alexa Request.
