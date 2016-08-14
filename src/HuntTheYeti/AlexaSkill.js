@@ -190,6 +190,42 @@ Response.prototype = (function () {
                 cardContent: cardContent,
                 shouldEndSession: false
             }));
+        },
+
+        // James Church added these methods
+        tellSSML: function (speechOutput) {
+            this._context.succeed(buildSpeechletResponse({
+                session: this._session,
+                output: {speech: "<SSML>"+speechOutput+"</SSML>", type: "SSML"},
+                shouldEndSession: true
+            }));
+        },
+        tellWithCardSSML: function (speechOutput, cardTitle, cardContent) {
+            this._context.succeed(buildSpeechletResponse({
+                session: this._session,
+                output: {speech: "<SSML>"+speechOutput+"</SSML>", type: "SSML"},
+                cardTitle: cardTitle,
+                cardContent: cardContent,
+                shouldEndSession: true
+            }));
+        },
+        askSSML: function (speechOutput, repromptSpeech) {
+            this._context.succeed(buildSpeechletResponse({
+                session: this._session,
+                output: {speech: "<SSML>"+speechOutput+"</SSML>", type: "SSML"},
+                reprompt: repromptSpeech,
+                shouldEndSession: false
+            }));
+        },
+        askWithCardSSML: function (speechOutput, repromptSpeech, cardTitle, cardContent) {
+            this._context.succeed(buildSpeechletResponse({
+                session: this._session,
+                output: {speech: "<SSML>"+speechOutput+"</SSML>", type: "SSML"},
+                reprompt: repromptSpeech,
+                cardTitle: cardTitle,
+                cardContent: cardContent,
+                shouldEndSession: false
+            }));
         }
     };
 })();
