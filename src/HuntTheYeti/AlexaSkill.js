@@ -213,7 +213,7 @@ Response.prototype = (function () {
             this._context.succeed(buildSpeechletResponse({
                 session: this._session,
                 output: {speech: "<SSML>"+speechOutput+"</SSML>", type: "SSML"},
-                reprompt: repromptSpeech,
+                reprompt: {speech: "<SSML>"+repromptSpeech+"</SSML>", type: "SSML"},
                 shouldEndSession: false
             }));
         },
@@ -221,7 +221,7 @@ Response.prototype = (function () {
             this._context.succeed(buildSpeechletResponse({
                 session: this._session,
                 output: {speech: "<SSML>"+speechOutput+"</SSML>", type: "SSML"},
-                reprompt: repromptSpeech,
+                reprompt: {speech: "<SSML>"+repromptSpeech+"</SSML>", type: "SSML"},
                 cardTitle: cardTitle,
                 cardContent: cardContent,
                 shouldEndSession: false
