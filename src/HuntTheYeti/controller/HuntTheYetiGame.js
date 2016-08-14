@@ -12,12 +12,14 @@ var HuntTheYetiGame = function (previousGame) {
         this.cave = new Cave();
         this.hasSpear = true;
         this.deadYeti = false;
+        this.didMove = true;
         this.consequence = "";
     }
     else {
         this.cave = new Cave(previousGame.cave);
         this.hasSpear = previousGame.hasSpear;
         this.deadYeti = previousGame.deadYeti;
+        this.didMove = previousGame.didMove;
         this.consequence = previousGame.consequence;
     }
 };
@@ -35,19 +37,16 @@ HuntTheYetiGame.prototype.isPlaying = function () {
 };
 
 /**
- * Moves the hunter and activates the consequence. Returns true if the
- * hunter moves, false otherwise.
+ * Moves the hunter and activates the consequence.
  *
  * @precondition aDirection is a string: north, south, east, or west.
  * @postcondition the hunter moves and the consequence to this action
- *                is stored.
- *
- * @returns true if the hunter moved, false otherwise.
+ *                is stored. If the hunter did move, that boolean is
+ *                stored as well.
  */
 HuntTheYetiGame.prototype.moveHunter = function (aDirection) {
-    var didMove = this.cave.moveHunter(aDirection);
+    this.didMove = this.cave.moveHunter(aDirection);
     this.consequence = this.cave.activateConsequence();
-    return didMove;
 };
 
 /**
@@ -68,7 +67,9 @@ HuntTheYetiGame.prototype.launchSpear = function (aDirection) {
 /**
  * Returns an English description of the room the hunter is currently
  * standing in. If bats carried the hunter to this room, an added description
- * is applied describing how the hunter got to this location.
+ * is applied describing how the hunter got to this location. If the hunter
+ * failed to move from the last position standing, the hunter bumps into
+ * a wall.
  *
  * @precondition none
  * @postcondition none
@@ -77,9 +78,15 @@ HuntTheYetiGame.prototype.launchSpear = function (aDirection) {
  */
 HuntTheYetiGame.prototype.getRoomDescription = function () {
     var description = "";
+
     if (this.consequence == "random_location") {
         description += "Enormous bats have picked up and dropped the hunter in a different part of the cave. ";
     }
+
+    if (this.didMove == false) {
+        description += "Bump! The hunter hit a wall. ";
+    }
+
     description += this.cave.getRoomDescription();
     return description;
 };

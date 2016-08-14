@@ -18,7 +18,7 @@ HuntTheYetiSkill.prototype.eventHandlers.onLaunch = function (launchRequest, ses
     session.attributes.game = null;
 
     console.log("HuntTheYetiSkill onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-    var speechOutput = "Welcome to Hunt the Yeti. Say 'Begin Game', or 'How to Play', or 'Overview'.";
+    var speechOutput = "Welcome to Yeti Hunt. Say 'Begin Game', or 'How to Play', or 'Overview'.";
     var repromptOutput = "Say 'Begin Game', or 'How to Play', or 'Overview'.";
     response.ask(speechOutput, repromptOutput);
 };
@@ -140,12 +140,12 @@ HuntTheYetiSkill.prototype.pauseGame = function (session, response) {
 
 
 HuntTheYetiSkill.prototype.tellHowToPlay = function (session, response) {
-    var speechOutput = "You move the hunter by saying 'move north' or any of the four cardinal directions (north, south, east, or west). To throw your only spear, say 'throw the spear north' (or any cardinal direction). Once you throw the spear, the game is over. To begin a new game, say 'Begin game'.";
+    var speechOutput = "You move the hunter by saying 'move' and then any of the four cardinal directions (north, south, east, or west). To throw your only spear, say 'throw the spear' and then any cardinal direction. Once you throw the spear, the game is over. To begin a new game, say 'Begin game'.";
     response.ask(speechOutput, "I'm ready to play when you are.");
 };
 
 HuntTheYetiSkill.prototype.tellOverview = function (session, response) {
-    var speechOutput = "In Hunt The Yeti, you are a hunter, armed with a single spear, in a dark five by five room cave. There are bats, open pits, and a terrible Yeti. Your goal is to kill the Yeti with a single spear throw. To begin a new game, say 'Begin game'.";
+    var speechOutput = "In Yeti Hunt, you are a hunter, armed with a single spear, in a dark five by five room cave. There are bats, open pits, and a terrible Yeti. Your goal is to kill the Yeti with a single spear throw. To begin a new game, say 'Begin game'.";
     response.ask(speechOutput, "I'm ready to play when you are.");
 };
 
