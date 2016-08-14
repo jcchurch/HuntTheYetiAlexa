@@ -35,15 +35,19 @@ HuntTheYetiGame.prototype.isPlaying = function () {
 };
 
 /**
- * Returns true if the player can still play, false otherwise.
+ * Moves the hunter and activates the consequence. Returns true if the
+ * hunter moves, false otherwise.
  *
  * @precondition aDirection is a string: north, south, east, or west.
  * @postcondition the hunter moves and the consequence to this action
  *                is stored.
+ *
+ * @returns true if the hunter moved, false otherwise.
  */
 HuntTheYetiGame.prototype.moveHunter = function (aDirection) {
-    this.cave.moveHunter(aDirection);
+    var didMove = this.cave.moveHunter(aDirection);
     this.consequence = this.cave.activateConsequence();
+    return didMove;
 };
 
 /**
