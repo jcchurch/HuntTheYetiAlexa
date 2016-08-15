@@ -2,7 +2,7 @@
 
 ## Overview
 
-Hunt the Yeti is an intepretation of Hunt the Wumpus, a classic game for teaching artificial intelligence. The game is played on a five-by-five grid of rooms called a cave. Scattered around the cave are:
+Hunt the Yeti is an interpretation of Hunt the Wumpus, a classic game for teaching artificial intelligence. The game is played on a five-by-five grid of rooms called a cave. Scattered around the cave are:
 
 - 1 hunter: You control the hunter.
 - 1 yeti: Your goal is to defeat the yeti.
@@ -19,7 +19,7 @@ Once the hunter has figured out the direction of the wumpus, the hunter should t
 
 ## Understanding This Code
 
-It is recommended that you study the [sample code provided by Amazon Echo Skill Team](https://github.com/amzn/alexa-skills-kit-js). There are several sample applcations to help you get started.
+It is recommended that you study the [sample code provided by Amazon Echo Skill Team](https://github.com/amzn/alexa-skills-kit-js). There are several sample applications to help you get started.
 
 To prepare this project for uploading, move into the `src` folder.
 
