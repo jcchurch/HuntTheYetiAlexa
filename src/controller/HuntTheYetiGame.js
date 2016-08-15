@@ -84,7 +84,7 @@ HuntTheYetiGame.prototype.getRoomDescription = function () {
     }
 
     if (this.didMove == false) {
-        description += "Bump! The hunter hit a wall. ";
+        description += "<audio src='https://s3.amazonaws.com/yetihuntaudio/hunter_bumps_into_wall.mp3'/> The hunter bumps into a wall. ";
     }
 
     description += this.cave.getRoomDescription();
