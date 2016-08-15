@@ -128,6 +128,13 @@ function createSpeechObject(optionsParam) {
     }
 }
 
+function createSSMLObject(speechOutput) {
+    return {
+        speech: "<speak>"+speechOutput+"</speak>",
+        type: "SSML"
+    };
+}
+
 Response.prototype = (function () {
     var buildSpeechletResponse = function (options) {
         var alexaResponse = {
@@ -196,14 +203,14 @@ Response.prototype = (function () {
         tellSSML: function (speechOutput) {
             this._context.succeed(buildSpeechletResponse({
                 session: this._session,
-                output: {speech: "<SSML>"+speechOutput+"</SSML>", type: "SSML"},
+                output: createSSMLObject(speechOutput),
                 shouldEndSession: true
             }));
         },
         tellWithCardSSML: function (speechOutput, cardTitle, cardContent) {
             this._context.succeed(buildSpeechletResponse({
                 session: this._session,
-                output: {speech: "<SSML>"+speechOutput+"</SSML>", type: "SSML"},
+                output: createSSMLObject(speechOutput),
                 cardTitle: cardTitle,
                 cardContent: cardContent,
                 shouldEndSession: true
@@ -212,16 +219,16 @@ Response.prototype = (function () {
         askSSML: function (speechOutput, repromptSpeech) {
             this._context.succeed(buildSpeechletResponse({
                 session: this._session,
-                output: {speech: "<SSML>"+speechOutput+"</SSML>", type: "SSML"},
-                reprompt: {speech: "<SSML>"+repromptSpeech+"</SSML>", type: "SSML"},
+                output: createSSMLObject(speechOutput),
+                reprompt: createSSMLObject(repromptSpeech),
                 shouldEndSession: false
             }));
         },
         askWithCardSSML: function (speechOutput, repromptSpeech, cardTitle, cardContent) {
             this._context.succeed(buildSpeechletResponse({
                 session: this._session,
-                output: {speech: "<SSML>"+speechOutput+"</SSML>", type: "SSML"},
-                reprompt: {speech: "<SSML>"+repromptSpeech+"</SSML>", type: "SSML"},
+                output: createSSMLObject(speechOutput),
+                reprompt: createSSMLObject(repromptSpeech),
                 cardTitle: cardTitle,
                 cardContent: cardContent,
                 shouldEndSession: false
