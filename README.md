@@ -17,6 +17,20 @@ You can move the hunter in any of the four cardinal directions: north, south, ea
 
 Once the hunter has figured out the direction of the wumpus, the hunter should throw a spear. To throw the spear, say 'launch the spear north', or 'throw south', or 'attack east'.
 
+## Understanding This Code
+
+It is recommended that you study the [sample code provided by Amazon Echo Skill Team](https://github.com/amzn/alexa-skills-kit-js). There are several sample applcations to help you get started.
+
+To prepare this project for uploading, move into the `src` folder.
+
+    cd src
+
+Then zip the project.
+
+    zip -r yeti.zip *
+
+Then upload the zip file produced.
+
 ## Attributions
 
 ### Game itself.
