@@ -28,6 +28,42 @@ function Cave(previousCave) {
 };
 
 /**
+ * Returns the cave height
+ * 
+ * @precondition none
+ * @postcondition none
+ * 
+ * @return the cave height
+ */
+Cave.prototype.getHeight = function() {
+    return this.HEIGHT;
+};
+
+/**
+ * Returns the cave width
+ * 
+ * @precondition none
+ * @postcondition none
+ * 
+ * @return the cave width
+ */
+Cave.prototype.getWidth = function() {
+    return this.WIDTH;
+};
+
+/**
+ * Returns an ArrayList of objects in a room
+ * 
+ * @precondition a valid cell of a room
+ * @postcondition none
+ * 
+ * @return an ArrayList of all objects in that room
+ */
+Cave.prototype.getRoomObjects = function(cell) {
+    return this.rooms[cell];
+};
+
+/**
  * Returns an ArrayList of valid hunter moves
  * 
  * @precondition none
@@ -79,10 +115,8 @@ Cave.prototype.activateConsequence = function() {
  * @precondition none
  * @postcondition none
  * 
- * @param row
- *            A cell row
- * @param col
- *            A cell column
+ * @param row A cell row
+ * @param col A cell column
  * @return returns the cell id of this row and column (or -1 if not
  *         possible)
  */
@@ -187,133 +221,6 @@ Cave.prototype.moveHunter = function(aDirection) {
     }
 
     return nextHunterCell != -1;
-};
-
-/*
- * (non-Javadoc)
- * 
- * @see java.lang.Object#toString()
- */
-Cave.prototype.toString = function() {
-    var hunterCell = this.find("Hunter");
-    var moves = this.getHunterMoves(hunterCell);
-    var yetiCell = -1; // this.find("Yeti");
-    var caveRepresentation = "";
-
-    for (var row = 0; row < this.HEIGHT; row++) {
-        caveRepresentation += " [ ";
-
-        for (var col = 0; col < this.WIDTH; col++) {
-            var cell = this.getCell(row, col);
-            if (cell == hunterCell) {
-                caveRepresentation += " H";
-            } else if (cell == yetiCell) {
-                caveRepresentation += " W";
-            } else {
-                caveRepresentation += " ~";
-            }
-        }
-
-        caveRepresentation += " ]\n";
-    }
-
-    caveRepresentation += "\n\n";
-    caveRepresentation += this.getRoomDescription();
-    caveRepresentation += "\n\n";
-
-    caveRepresentation += "The hunter may move ";
-    for (var i = 0; i < moves.length; i++) {
-        caveRepresentation += moves[i] + " ";
-    }
-    caveRepresentation += "\n\n";
-
-    return caveRepresentation;
-};
-
-/**
- * Gets the description of the room.
- *
- * @precondition: none
- * @postcondition: none
- * 
- * @return An English description of the room.
- */
-Cave.prototype.getRoomDescription = function() {
-    var hunterCell = this.find("Hunter");
-    var deathDescription = this.getDeathDescriptions(hunterCell);
-
-    if (deathDescription != "") {
-        return deathDescription;
-    }
-
-    return this.getLivingDescriptions(hunterCell);
-};
-
-/**
- * Gets the description of everything inside the
- * room with the hunter (except for the hunter itself).
- *
- * @precondition: the hunter's current cell
- * @postcondition: none
- * 
- * @return An English description of the room.
- */
-Cave.prototype.getLivingDescriptions = function(hunterCell) {
-    var livingDescription = "";
-    for (var j = 0; j < this.rooms[hunterCell].length; j++) { 
-        var aRoomObject = this.rooms[hunterCell][j];
-        if (aRoomObject != "Hunter") {
-            livingDescription += RoomObjects[aRoomObject].description + " ";
-        }
-    }
-
-    if (this.rooms[hunterCell].length == 1) {
-        livingDescription += "The hunter does not sense anything near. ";
-    }
-
-    return livingDescription;
-};
-
-/**
- * Gets the description of elements inside
- * the room with the consequence of death.
- *
- * @precondition: the hunter's current cell
- * @postcondition: none
- * 
- * @return An English description of the room.
- */
-Cave.prototype.getDeathDescriptions = function(hunterCell) {
-    var deathDescription = "";
-    for (var j = 0; j < this.rooms[hunterCell].length; j++) { 
-        var aRoomObject = this.rooms[hunterCell][j];
-        if (RoomObjects[aRoomObject].consequence == "death") {
-            deathDescription += RoomObjects[aRoomObject].description + " ";
-        }
-    }
-
-    return deathDescription;
-};
-
-/**
- * Builds an English description of open rooms.
- *
- * @precondition: none
- * @postcondition: none
- * 
- * @return An English description of open rooms.
- */
-Cave.prototype.getRoomOpenings = function() {
-    var hunterCell = this.find("Hunter");
-    var moves = this.getHunterMoves(hunterCell);
-    var roomDescription = "";
-
-    roomDescription += "Rooms are open ";
-    for (var i = 0; i < moves.length; i++) {
-        roomDescription += moves[i] + ", ";
-    }
-
-    return roomDescription;
 };
 
 // Private methods from here down.

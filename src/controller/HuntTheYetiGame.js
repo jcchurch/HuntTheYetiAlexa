@@ -1,4 +1,5 @@
 var Cave = require("../model/Cave");
+var CaveView = require("../view/CaveView");
 
 /**
  * Builds the HuntTheYetiGame object, either from 
@@ -77,6 +78,7 @@ HuntTheYetiGame.prototype.launchSpear = function (aDirection) {
  * @returns an English description of the room
  */
 HuntTheYetiGame.prototype.getRoomDescription = function () {
+    var view = new CaveView(this.cave);
     var description = "";
 
     if (this.consequence == "random_location") {
@@ -87,7 +89,7 @@ HuntTheYetiGame.prototype.getRoomDescription = function () {
         description += "<audio src='https://s3.amazonaws.com/yetihuntaudio/hunter_bumps_into_wall.mp3'/> The hunter bumps into a wall. ";
     }
 
-    description += this.cave.getRoomDescription();
+    description += view.getRoomDescription();
     return description;
 };
 
@@ -101,7 +103,8 @@ HuntTheYetiGame.prototype.getRoomDescription = function () {
  * @returns an English description of the room's openings
  */
 HuntTheYetiGame.prototype.getRoomOpenings = function () {
-    return this.cave.getRoomOpenings();
+    var view = new CaveView(this.cave);
+    return view.getRoomOpenings();
 };
 
 /**
