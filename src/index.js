@@ -109,9 +109,12 @@ HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
                      + session.attributes.game.getRoomOpenings(),
                      "I'm ready to play when you are.");
     } else {
-        response.tellSSML(session.attributes.game.getRoomDescription()
-                      + " "
-                      + session.attributes.game.getConsequence());
+        response.askSSML(session.attributes.game.getRoomDescription()
+            + " "
+            + session.attributes.game.getConsequence()
+            + " If you would like to play again, say 'Begin Game' or say 'Stop'",
+            "The game is over. Say 'Begin Game' or 'Stop'."
+            );
     }
 };
 
@@ -126,10 +129,15 @@ HuntTheYetiSkill.prototype.throwSpear = function (intent, session, response) {
     if (session.attributes.game.isPlaying()) {
         var aDirection = intent.slots.Direction.value;
         session.attributes.game.launchSpear(aDirection);
-        response.tellSSML(session.attributes.game.getConsequence());
+        response.askSSML(session.attributes.game.getConsequence()
+                         + " If you would like to play again, say 'Begin Game' or say 'Stop'",
+                         "The game is over. Say 'Begin Game' or 'Stop'."
+                        );
     }
     else {
-        response.tellSSML("The game is over.");
+        response.askSSML("The game is over. Say 'Begin Game' or 'Stop'.",
+                         "The game is over. Say 'Begin Game' or 'Stop'."
+                        );
     }
 };
 
