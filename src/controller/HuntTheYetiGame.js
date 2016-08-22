@@ -11,14 +11,14 @@ var CaveView = require("../view/CaveView");
 var HuntTheYetiGame = function (previousGame) {
     if (previousGame === undefined) {
         this.cave = new Cave();
-        this.hasSpear = true;
+        this.spearCount = 1;
         this.deadYeti = false;
         this.didMove = true;
         this.consequence = "";
     }
     else {
         this.cave = new Cave(previousGame.cave);
-        this.hasSpear = previousGame.hasSpear;
+        this.spearCount = previousGame.spearCount;
         this.deadYeti = previousGame.deadYeti;
         this.didMove = previousGame.didMove;
         this.consequence = previousGame.consequence;
@@ -34,7 +34,7 @@ var HuntTheYetiGame = function (previousGame) {
  * @return true if the player can still play, false otherwise.
  */
 HuntTheYetiGame.prototype.isPlaying = function () {
-    return this.hasSpear && !this.deadYeti && this.consequence != "death";
+    return (this.spearCount > 0) && !this.deadYeti && this.consequence != "death";
 };
 
 /**
@@ -55,12 +55,12 @@ HuntTheYetiGame.prototype.moveHunter = function (aDirection) {
  * no longer has a spear and the yeti may have died as a result.
  *
  * @precondition aDirection is a string: north, south, east, or west.
- * @postcondition this.hasSpear is set to false (because ths spear is thrown)
+ * @postcondition this.spearCount is reduced by 1 (because ths spear is thrown)
  *                and this.deadYeti is updated to reflect if the yeti died
  *                and the consequence is stored.
  */
 HuntTheYetiGame.prototype.launchSpear = function (aDirection) {
-    this.hasSpear = false;
+    this.spearCount -= 1;
     this.deadYeti = this.cave.launchSpear(aDirection);
     this.consequence = this.cave.activateConsequence();
 };
@@ -128,7 +128,7 @@ HuntTheYetiGame.prototype.getConsequence = function () {
         if (this.deadYeti) {
             return "<audio src='https://s3.amazonaws.com/yetihuntaudio/spear_throw.mp3'/> <audio src='https://s3.amazonaws.com/yetihuntaudio/yeti_death.mp3'/> The spear hits the yeti! The yeti falls over dead and the hunter lives! <audio src='https://s3.amazonaws.com/yetihuntaudio/victory.mp3'/> The game is over. You win!";
         } else {
-            if (!this.hasSpear) {
+            if (this.spearCount == 0) {
                 return "<audio src='https://s3.amazonaws.com/yetihuntaudio/spear_throw.mp3'/> <audio src='https://s3.amazonaws.com/yetihuntaudio/spear_hits_wall.mp3'/> The hunter missed the yeti and is now defenseless. The game is over.";
             }
         }
