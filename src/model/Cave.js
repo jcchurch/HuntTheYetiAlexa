@@ -176,18 +176,15 @@ Cave.prototype.getRow = function(cell) {
  */
 Cave.prototype.launchSpear = function(aDirection) {
     var spearCell = this.find("Hunter");
-    var spearRow = this.getRow(spearCell);
-    var spearCol = this.getCol(spearCell);
-    var yetiCell = this.find("Yeti");
 
     while (spearCell != -1) {
+        var spearRow = this.getRow(spearCell);
+        var spearCol = this.getCol(spearCell);
         spearCell = this.determineNextCell(aDirection, spearRow, spearCol);
 
         if (spearCell != -1) {
-            spearRow = this.getRow(spearCell);
-            spearCol = this.getCol(spearCell);
-
-            if (yetiCell == this.getCell(spearRow, spearCol)) {
+            var yetiPosition = this.rooms[spearCell].indexOf("Yeti")
+            if (yetiPosition != -1) {
                 return true;
             }
         }
