@@ -167,7 +167,7 @@ Cave.prototype.getRow = function(cell) {
  * Yeti (and returns true) or a wall (and returns false). It's up to the
  * game controller to decide if this is the end of the game.
  * 
- * @precondition none
+ * @precondition aDirection is "north", "south", "east", "west"
  * @postcondition none
  * 
  * @param aDirection
