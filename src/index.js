@@ -99,22 +99,27 @@ HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
     if (session.attributes.game.isPlaying()) {
         var aDirection = intent.slots.Direction.value;
         session.attributes.game.moveHunter(aDirection);
-    }
 
-    if (session.attributes.game.isPlaying()) {
-        response.askSSML(aDirection
-                     + ". "
-                     + session.attributes.game.getRoomDescription()
-                     + " "
-                     + session.attributes.game.getRoomOpenings(),
-                     "I'm ready to play when you are.");
-    } else {
-        response.askSSML(session.attributes.game.getRoomDescription()
-            + " "
-            + session.attributes.game.getConsequence()
-            + " If you would like to play again, say 'Begin Game' or say 'Stop'",
-            "The game is over. Say 'Begin Game' or 'Stop'."
-            );
+        if (session.attributes.game.isPlaying()) {
+            response.askSSML(aDirection
+                         + ". "
+                         + session.attributes.game.getRoomDescription()
+                         + " "
+                         + session.attributes.game.getRoomOpenings(),
+                         "I'm ready to play when you are.");
+        } else {
+            response.askSSML(session.attributes.game.getRoomDescription()
+                + " "
+                + session.attributes.game.getConsequence()
+                + " If you would like to play again, say 'Begin Game' or say 'Stop'",
+                "The game is over. Say 'Begin Game' or 'Stop'."
+                );
+        }
+    }
+    else {
+        response.askSSML("The game is over. Say 'Begin Game' or 'Stop'.",
+                         "The game is over. Say 'Begin Game' or 'Stop'."
+                        );
     }
 };
 
