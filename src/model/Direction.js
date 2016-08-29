@@ -1,1 +1,1 @@
-exports.Direction = ["north", "south", "east", "west"];
+module.exports = ["north", "south", "east", "west"];

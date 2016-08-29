@@ -76,8 +76,8 @@ Cave.prototype.getHunterMoves = function(hunterCell) {
     var hunterCol = this.getCol(hunterCell);
 
     var validHunterMoves = [];
-    for (var i = 0; i < Direction.Direction.length; i++) {
-        var aDirection = Direction.Direction[i];
+    for (var i = 0; i < Direction.length; i++) {
+        var aDirection = Direction[i];
         var nextHunterCell = this.determineNextCell(aDirection, hunterRow, hunterCol);
         if (nextHunterCell != -1) {
             validHunterMoves.push(aDirection);
