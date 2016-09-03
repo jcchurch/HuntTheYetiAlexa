@@ -5,25 +5,16 @@ var RoomObjects = require('./RoomObjects');
  * Creates the cave in which the player hunts the Yeti.
  * 
  * @precondition none
- * @postcondition the game board is initialized with bats, pits, and a
- *                single Yeti.
+ * @postcondition the game board is initialized
+                  with bats, pits, and Yeti.
  */
-function Cave(previousCave) {
-    this.BAT_COUNT = 2;
-    this.PIT_COUNT = 2;
-    this.HEIGHT = 5;
-    this.WIDTH = 5;
+function Cave(rooms, width, height) {
+    this.rooms = rooms;
+    this.WIDTH = width;
+    this.HEIGHT = height;
 
-    if (previousCave === undefined) {
-        this.rooms = [];
-
-        this.initCaveRooms();
-        this.initCaveObjects();
-        this.initCaveEffects();
+    if (-1 == this.find("Hunter")) {
         this.placeHunterInRandomSafeRoom();
-    }
-    else {
-        this.rooms = previousCave.rooms;
     }
 };
 
@@ -50,6 +41,24 @@ Cave.prototype.getHeight = function() {
 Cave.prototype.getWidth = function() {
     return this.WIDTH;
 };
+
+/**
+ * Counts the number of yeti in the cave.
+ *
+ * @precondition none
+ * @postcondition none
+ *
+ * @return the number of yeti in the cave.
+ */
+Cave.prototype.getYetiCount = function() {
+    var count = 0;
+    for (var i = 0; i < this.rooms.length; i++) {
+        if (-1 != this.rooms[i].indexOf("Yeti")) {
+            count += 1;
+        }
+    }
+    return count;
+}
 
 /**
  * Returns an ArrayList of objects in a room
@@ -183,8 +192,9 @@ Cave.prototype.launchSpear = function(aDirection) {
         spearCell = this.determineNextCell(aDirection, spearRow, spearCol);
 
         if (spearCell != -1) {
-            var yetiPosition = this.rooms[spearCell].indexOf("Yeti")
+            var yetiPosition = this.rooms[spearCell].indexOf("Yeti");
             if (yetiPosition != -1) {
+                this.rooms[spearCell].splice(yetiPosition, 1);
                 return true;
             }
         }
@@ -221,13 +231,6 @@ Cave.prototype.moveHunter = function(aDirection) {
 };
 
 // Private methods from here down.
-
-Cave.prototype.addEffectToRowAndColumn = function(row, col, anEffect) {
-    var cell = this.getCell(row, col);
-    if (cell != -1) {
-        this.rooms[cell].push(anEffect);
-    }
-};
 
 Cave.prototype.determineNextCell = function(aDirection, row, col) {
     var nextCell = -1;
@@ -276,46 +279,6 @@ Cave.prototype.getConsequence = function(hunterCell) {
 
 Cave.prototype.getRandomSafeRoom = function(safeRooms) {
     return safeRooms[Math.floor(Math.random() * safeRooms.length)];
-};
-
-Cave.prototype.initCaveEffects = function() {
-
-    for (var i = 0; i < this.WIDTH * this.HEIGHT; i++) {
-        var row = this.getRow(i);
-        var col = this.getCol(i);
-
-        for (var j = 0; j < this.rooms[i].length; j++) {
-            var aRoomObject = this.rooms[i][j];
-            var anEffect = RoomObjects[aRoomObject].effect;
-
-            if (anEffect != null) {
-                this.addEffectToRowAndColumn(row + 1, col, anEffect);
-                this.addEffectToRowAndColumn(row - 1, col, anEffect);
-                this.addEffectToRowAndColumn(row, col + 1, anEffect);
-                this.addEffectToRowAndColumn(row, col - 1, anEffect);
-            }
-        }
-    }
-};
-
-Cave.prototype.initCaveObjects = function() {
-    var permutations = this.randomPermutation(this.WIDTH * this.HEIGHT);
-
-    for (var i = 0; i < this.BAT_COUNT; i++) {
-        this.rooms[permutations.shift()].push("Bat");
-    }
-
-    for (var i = 0; i < this.PIT_COUNT; i++) {
-        this.rooms[permutations.shift()].push("Pit");
-    }
-
-    this.rooms[permutations.shift()].push("Yeti");
-};
-
-Cave.prototype.initCaveRooms = function() {
-    for (var i = 0; i < this.WIDTH * this.HEIGHT; i++) {
-        this.rooms.push([]);
-    }
 };
 
 Cave.prototype.moveHunterToCell = function(hunterCell, hunterPosition, nextHunterCell) {

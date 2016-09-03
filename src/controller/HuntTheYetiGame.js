@@ -1,5 +1,6 @@
-var Cave = require("../model/Cave");
+var CaveBuilder = require("../model/CaveBuilder");
 var CaveView = require("../view/CaveView");
+var Cave =  require("../model/Cave");
 
 /**
  * Builds the HuntTheYetiGame object, either from 
@@ -10,16 +11,15 @@ var CaveView = require("../view/CaveView");
  */
 var HuntTheYetiGame = function (previousGame) {
     if (previousGame === undefined) {
-        this.cave = new Cave();
+        caveBuilder = new CaveBuilder(5, 5, 2, 2, 1);
+        this.cave = caveBuilder.getCave();
         this.spearCount = 1;
-        this.deadYeti = false;
         this.didMove = true;
         this.consequence = "";
     }
     else {
-        this.cave = new Cave(previousGame.cave);
+        this.cave = new Cave(previousGame.cave, previousGame.width, previousGame.height);
         this.spearCount = previousGame.spearCount;
-        this.deadYeti = previousGame.deadYeti;
         this.didMove = previousGame.didMove;
         this.consequence = previousGame.consequence;
     }
@@ -34,7 +34,7 @@ var HuntTheYetiGame = function (previousGame) {
  * @return true if the player can still play, false otherwise.
  */
 HuntTheYetiGame.prototype.isPlaying = function () {
-    return (this.spearCount > 0) && !this.deadYeti && this.consequence != "death";
+    return (this.spearCount > 0) && (this.cave.getYetiCount() > 0) && this.consequence != "death";
 };
 
 /**
@@ -56,12 +56,11 @@ HuntTheYetiGame.prototype.moveHunter = function (aDirection) {
  *
  * @precondition aDirection is a string: north, south, east, or west.
  * @postcondition this.spearCount is reduced by 1 (because ths spear is thrown)
- *                and this.deadYeti is updated to reflect if the yeti died
  *                and the consequence is stored.
  */
 HuntTheYetiGame.prototype.launchSpear = function (aDirection) {
     this.spearCount -= 1;
-    this.deadYeti = this.cave.launchSpear(aDirection);
+    this.cave.launchSpear(aDirection);
     this.consequence = this.cave.activateConsequence();
 };
 
@@ -125,7 +124,7 @@ HuntTheYetiGame.prototype.getConsequence = function () {
     if (this.consequence == "death") {
         return "The hunter has died. The game is over.";
     } else {
-        if (this.deadYeti) {
+        if (this.cave.getYetiCount() == 0) {
             return "<audio src='https://s3.amazonaws.com/yetihuntaudio/spear_throw.mp3'/> <audio src='https://s3.amazonaws.com/yetihuntaudio/yeti_death.mp3'/> The spear hits the yeti! The yeti falls over dead and the hunter lives! <audio src='https://s3.amazonaws.com/yetihuntaudio/victory.mp3'/> The game is over. You win!";
         } else {
             if (this.spearCount == 0) {
