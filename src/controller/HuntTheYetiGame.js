@@ -11,19 +11,25 @@ var Cave =  require("../model/Cave");
  */
 var HuntTheYetiGame = function (previousGame) {
     if (previousGame === undefined) {
-        caveBuilder = new CaveBuilder(5, 5, 2, 2, 1);
-        this.cave = caveBuilder.getCave();
         this.spearCount = 1;
         this.didMove = true;
         this.consequence = "";
+        this.width = 5;
+        this.height = 5;
+        caveBuilder = new CaveBuilder(this.width,
+                                      this.height,
+                                      2, 2, 1);
+        this.cave = caveBuilder.getCave();
     }
     else {
-        this.cave = new Cave(previousGame.cave,
-                             previousGame.width,
-                             previousGame.height);
         this.spearCount = previousGame.spearCount;
         this.didMove = previousGame.didMove;
         this.consequence = previousGame.consequence;
+        this.width = previousGame.width;
+        this.height = previousGame.height;
+        this.cave = new Cave(previousGame.cave,
+                             previousGame.width,
+                             previousGame.height);
     }
 };
 
