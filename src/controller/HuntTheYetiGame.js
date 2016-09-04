@@ -18,7 +18,9 @@ var HuntTheYetiGame = function (previousGame) {
         this.consequence = "";
     }
     else {
-        this.cave = new Cave(previousGame.cave, previousGame.width, previousGame.height);
+        this.cave = new Cave(previousGame.cave,
+                             previousGame.width,
+                             previousGame.height);
         this.spearCount = previousGame.spearCount;
         this.didMove = previousGame.didMove;
         this.consequence = previousGame.consequence;
@@ -34,7 +36,9 @@ var HuntTheYetiGame = function (previousGame) {
  * @return true if the player can still play, false otherwise.
  */
 HuntTheYetiGame.prototype.isPlaying = function () {
-    return (this.spearCount > 0) && (this.cave.getYetiCount() > 0) && this.consequence != "death";
+    return this.spearCount > 0
+           && this.cave.getYetiCount() > 0
+           && this.consequence != "death";
 };
 
 /**
