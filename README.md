@@ -15,7 +15,7 @@ To begin the game, say "Alexa, launch the Yeti Hunt Game", then "Begin Game".
 
 You can move the hunter in any of the four cardinal directions: north, south, east, or west. To move, say 'move north', or 'step east', or 'go west', or simply 'south'.
 
-Once the hunter has figured out the direction of the wumpus, the hunter should throw a spear. To throw the spear, say 'launch the spear north', or 'throw south', or 'attack east'.
+Once the hunter has figured out the direction of the yeti, the hunter should throw a spear. To throw the spear, say 'launch the spear north', or 'throw south', or 'attack east'.
 
 ## Understanding This Code
 
