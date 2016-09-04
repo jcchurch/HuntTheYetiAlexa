@@ -177,7 +177,7 @@ Cave.prototype.getRow = function(cell) {
  * game controller to decide if this is the end of the game.
  * 
  * @precondition aDirection is "north", "south", "east", "west"
- * @postcondition none
+ * @postcondition the yeti (if hit) is removed from the cave
  * 
  * @param aDirection
  *            the direction in which the spear is thrown
@@ -224,7 +224,7 @@ Cave.prototype.moveHunter = function(aDirection) {
     var nextHunterCell = this.determineNextCell(aDirection, hunterRow, hunterCol);
 
     if (nextHunterCell != -1) {
-        this.moveHunterToCell(hunterCell, hunterPosition, nextHunterCell);
+        this.moveObjectToCell(hunterCell, hunterPosition, nextHunterCell);
     }
 
     return nextHunterCell != -1;
@@ -281,9 +281,9 @@ Cave.prototype.getRandomSafeRoom = function(safeRooms) {
     return safeRooms[Math.floor(Math.random() * safeRooms.length)];
 };
 
-Cave.prototype.moveHunterToCell = function(hunterCell, hunterPosition, nextHunterCell) {
-    var hunter = this.rooms[hunterCell].splice(hunterPosition, 1);
-    this.rooms[nextHunterCell].push(hunter[0]);
+Cave.prototype.moveObjectToCell = function(inCell, inPosition, nextCell) {
+    var item = this.rooms[inCell].splice(inPosition, 1);
+    this.rooms[nextCell].push(item[0]);
 };
 
 Cave.prototype.randomPermutation = function(n) {
@@ -318,7 +318,7 @@ Cave.prototype.transportHunterToRandomSafeRoom = function(hunterCell) {
     var safeRooms = this.getSafeRooms();
     var safeRoom = this.getRandomSafeRoom(safeRooms);
 
-    this.moveHunterToCell(hunterCell, hunterPosition, safeRoom);
+    this.moveObjectToCell(hunterCell, hunterPosition, safeRoom);
 };
 
 Cave.prototype.placeHunterInRandomSafeRoom = function() {
