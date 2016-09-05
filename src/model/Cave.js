@@ -286,26 +286,9 @@ Cave.prototype.moveObjectToCell = function(inCell, inPosition, nextCell) {
     this.rooms[nextCell].push(item[0]);
 };
 
-Cave.prototype.randomPermutation = function(n) {
-    var list = [];
-    var randomList = [];
-
-    for (var i = 0; i < n; i++) {
-        list.push(i);
-    }
-
-    while (list.length > 0) {
-        var randomIndex = Math.floor(Math.random() * list.length);
-        var roomNumber = list.splice(randomIndex, 1);
-        randomList.push(roomNumber[0]);
-    }
-
-    return randomList;
-};
-
 Cave.prototype.getSafeRooms = function() {
     var safeRooms = [];
-    for (var i = 0; i < this.WIDTH * this.HEIGHT; i++) {
+    for (var i = 0; i < this.rooms.length; i++) {
         if (this.rooms[i].length == 0) {
             safeRooms.push(i);
         }
