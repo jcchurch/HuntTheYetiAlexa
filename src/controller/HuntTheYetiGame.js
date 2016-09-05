@@ -22,8 +22,8 @@ var HuntTheYetiGame = function (previousGame) {
         this.didMove = previousGame.didMove;
         this.consequence = previousGame.consequence;
         this.cave = new Cave(previousGame.cave.rooms,
-                             previousGame.cave.width,
-                             previousGame.cave.height);
+                             previousGame.cave.WIDTH,
+                             previousGame.cave.HEIGHT);
     }
 };
 
