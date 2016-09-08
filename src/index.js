@@ -76,7 +76,12 @@ HuntTheYetiSkill.prototype.beginGame = function (session, response) {
     var roomDescription = session.attributes.game.getRoomDescription();
     var roomOpenings = session.attributes.game.getRoomOpenings();
 
-    response.askSSML("The hunter, armed with a spear, is lost in a cave. Help the hunter escape. "
+    spearCount = "a spear";
+    if (session.attributes.game.getSpearCount() > 1) {
+        spearCount = session.attributes.game.getSpearCount() + " spears";
+    }
+
+    response.askSSML("The hunter, armed with "+spearCount+", is lost in a cave. Help the hunter escape. "
                  + roomDescription
                  + " "
                  + roomOpenings
@@ -90,77 +95,102 @@ HuntTheYetiSkill.prototype.endGame = function (session, response) {
 
 HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
     if (session.attributes.game == null) {
-        response.ask("To start a game, say 'Begin Game'.", "To start, say 'Begin Game'.");
+        presentNewGameMessage(response);
         return;
     }
 
     session.attributes.game = new HuntTheYetiGame(session.attributes.game);
 
-    if (session.attributes.game.isPlaying()) {
-        var aDirection = intent.slots.Direction.value;
-        session.attributes.game.moveHunter(aDirection);
-
-        if (session.attributes.game.isPlaying()) {
-            response.askSSML(aDirection
-                         + ". "
-                         + session.attributes.game.getRoomDescription()
-                         + " "
-                         + session.attributes.game.getRoomOpenings(),
-                         "I'm ready to play when you are.");
-        } else {
-            response.askSSML(session.attributes.game.getRoomDescription()
-                + " "
-                + session.attributes.game.getConsequence()
-                + " If you would like to play again, say 'Begin Game' or say 'Stop'",
-                "The game is over. Say 'Begin Game' or 'Stop'."
-                );
-        }
+    if (!session.attributes.game.isPlaying()) {
+        presentGameOverMessage(response);
+        return;
     }
-    else {
-        response.askSSML("The game is over. Say 'Begin Game' or 'Stop'.",
-                         "The game is over. Say 'Begin Game' or 'Stop'."
-                        );
+
+    var aDirection = intent.slots.Direction.value;
+    session.attributes.game.moveHunter(aDirection);
+
+    if (session.attributes.game.isPlaying()) {
+        response.askSSML(aDirection
+                     + ". "
+                     + getRoomDescriptionAndOpenings(session),
+                     getRoomDescriptionAndOpenings(session));
+    } else {
+        response.askSSML(session.attributes.game.getRoomDescription()
+            + " "
+            + session.attributes.game.getConsequence()
+            + " If you would like to play again, say 'Begin Game' or say 'Stop'",
+            "The game is over. Say 'Begin Game' or 'Stop'."
+            );
     }
 };
 
 HuntTheYetiSkill.prototype.throwSpear = function (intent, session, response) {
     if (session.attributes.game == null) {
-        response.ask("To start a game, say 'Begin Game'.", "To start, say 'Begin Game'.");
+        presentNewGameMessage(response);
         return;
     }
 
     session.attributes.game = new HuntTheYetiGame(session.attributes.game);
 
+    if (!session.attributes.game.isPlaying()) {
+        presentGameOverMessage(response);
+        return;
+    }
+
+    var aDirection = intent.slots.Direction.value;
+    session.attributes.game.launchSpear(aDirection);
+
     if (session.attributes.game.isPlaying()) {
-        var aDirection = intent.slots.Direction.value;
-        session.attributes.game.launchSpear(aDirection);
         response.askSSML(session.attributes.game.getConsequence()
-                         + " If you would like to play again, say 'Begin Game' or say 'Stop'",
-                         "The game is over. Say 'Begin Game' or 'Stop'."
-                        );
+                         + " "
+                         + getRoomDescriptionAndOpenings(session),
+                         "Are you still there? " + getRoomDescriptionAndOpenings(session));
     }
     else {
-        response.askSSML("The game is over. Say 'Begin Game' or 'Stop'.",
+        response.askSSML(session.attributes.game.getConsequence()
+                         + " If you would like to play again, say 'Begin Game' or say 'Stop'",
                          "The game is over. Say 'Begin Game' or 'Stop'."
                         );
     }
 };
 
 HuntTheYetiSkill.prototype.pauseGame = function (session, response) {
-    var speechOutput = "I'll wait. To begin a new game, say 'Begin game.' To move, say 'move' and a direction. To throw the spear, say 'throw' and a direction.";
-    response.ask(speechOutput, "I'm ready to play when you are.");
+    var speechOutput = "I'll wait. To begin a new game, say 'Begin game.' To move, say 'move' and a direction. To throw the spear, say 'throw' and a direction. ";
+    response.ask(speechOutput + getRoomDescriptionAndOpenings(session),
+                 "Are you still there? " + getRoomDescriptionAndOpenings(session));
 };
 
 
 HuntTheYetiSkill.prototype.tellHowToPlay = function (session, response) {
-    var speechOutput = "You move the hunter by saying 'move' and then any of the four cardinal directions (north, south, east, or west). To throw your only spear, say 'throw the spear' and then any cardinal direction. Once you throw the spear, the game is over. To begin a new game, say 'Begin game'.";
-    response.ask(speechOutput, "I'm ready to play when you are.");
+    var speechOutput = "You move the hunter by saying 'move' and then any of the four cardinal directions (north, south, east, or west). To throw your only spear, say 'throw the spear' and then any cardinal direction. Once you throw the spear, the game is over. To begin a new game, say 'Begin game'. For an overview, say 'overview'.";
+    response.ask(speechOutput, getQuickHelp());
 };
 
 HuntTheYetiSkill.prototype.tellOverview = function (session, response) {
-    var speechOutput = "In Yeti Hunt, you are a hunter, armed with a single spear, in a dark five by five room cave. There are bats, open pits, and a terrible Yeti. Your goal is to kill the Yeti with a single spear throw. To begin a new game, say 'Begin game'.";
-    response.ask(speechOutput, "I'm ready to play when you are.");
+    var speechOutput = "In Yeti Hunt, you are a hunter, armed with a single spear, in a dark five by five room cave. There are bats, open pits, and a terrible Yeti. Your goal is to kill the Yeti with a single spear throw. To begin a new game, say 'Begin game'. To get help, say 'how to play'.";
+    response.ask(speechOutput, getQuickHelp());
 };
+
+function presentGameOverMessage(response) {
+    response.askSSML("The game is over. Say 'Begin Game' or 'Stop'.",
+                     "The game is over. Say 'Begin Game' or 'Stop'."
+                    );
+}
+
+function presentNewGameMessage(response) {
+    response.ask("To start a game, say 'Begin Game'.",
+                 "To start, say 'Begin Game'.");
+}
+
+function getRoomDescriptionAndOpenings(session) {
+    return session.attributes.game.getRoomDescription()
+           + " "
+           + session.attributes.game.getRoomOpenings();
+}
+
+function getQuickHelp() {
+    return "To begin a new game, say 'Begin game'. For an overview, say 'overview'. For help, say 'how to play'.";
+}
 
 // Create the handler that responds to the Alexa Request.
 exports.handler = function (event, context) {

@@ -13,6 +13,8 @@ var HuntTheYetiGame = function (previousGame) {
     if (previousGame === undefined) {
         this.spearCount = 1;
         this.didMove = true;
+        this.didThrow = false;
+        this.didHit = false;
         this.consequence = "";
         var caveBuilder = new CaveBuilder(5, 5, 2, 2, 1);
         this.cave = caveBuilder.getCave();
@@ -20,11 +22,25 @@ var HuntTheYetiGame = function (previousGame) {
     else {
         this.spearCount = previousGame.spearCount;
         this.didMove = previousGame.didMove;
+        this.didThrow = previousGame.didThrow;
+        this.didHit = previousGame.didHit;
         this.consequence = previousGame.consequence;
         this.cave = new Cave(previousGame.cave.rooms,
                              previousGame.cave.WIDTH,
                              previousGame.cave.HEIGHT);
     }
+};
+
+/**
+ * Returns the spear count.
+ *
+ * @precondition none
+ * @postcondition none
+ *
+ * @returns the spear count.
+ */
+HuntTheYetiGame.prototype.getSpearCount = function () {
+    return this.spearCount;
 };
 
 /**
@@ -36,8 +52,9 @@ var HuntTheYetiGame = function (previousGame) {
  * @return true if the player can still play, false otherwise.
  */
 HuntTheYetiGame.prototype.isPlaying = function () {
-    return this.spearCount > 0
-           && this.cave.getYetiCount() > 0
+    var yetiCount = this.cave.getYetiCount();
+    return this.spearCount >= yetiCount
+           && yetiCount > 0
            && this.consequence != "death";
 };
 
@@ -52,6 +69,7 @@ HuntTheYetiGame.prototype.isPlaying = function () {
 HuntTheYetiGame.prototype.moveHunter = function (aDirection) {
     this.didMove = this.cave.moveHunter(aDirection);
     this.consequence = this.cave.activateConsequence();
+    this.didThrow = false;
 };
 
 /**
@@ -64,8 +82,9 @@ HuntTheYetiGame.prototype.moveHunter = function (aDirection) {
  */
 HuntTheYetiGame.prototype.launchSpear = function (aDirection) {
     this.spearCount -= 1;
-    this.cave.launchSpear(aDirection);
+    this.didHit = this.cave.launchSpear(aDirection);
     this.consequence = this.cave.activateConsequence();
+    this.didThrow = true;
 };
 
 /**
@@ -125,14 +144,29 @@ HuntTheYetiGame.prototype.getRoomOpenings = function () {
  * @returns an English description of the most recent consequence.
  */
 HuntTheYetiGame.prototype.getConsequence = function () {
+
+    var spearHitAudio = "<audio src='https://s3.amazonaws.com/yetihuntaudio/spear_throw.mp3'/> <audio src='https://s3.amazonaws.com/yetihuntaudio/yeti_death.mp3'/>";
+    var spearMissesAudio = "<audio src='https://s3.amazonaws.com/yetihuntaudio/spear_throw.mp3'/> <audio src='https://s3.amazonaws.com/yetihuntaudio/spear_hits_wall.mp3'/>";
+
+
     if (this.consequence == "death") {
         return "The hunter has died. The game is over.";
     } else {
-        if (this.cave.getYetiCount() == 0) {
-            return "<audio src='https://s3.amazonaws.com/yetihuntaudio/spear_throw.mp3'/> <audio src='https://s3.amazonaws.com/yetihuntaudio/yeti_death.mp3'/> The spear hits the yeti! The yeti falls over dead and the hunter lives! <audio src='https://s3.amazonaws.com/yetihuntaudio/victory.mp3'/> The game is over. You win!";
-        } else {
-            if (this.spearCount == 0) {
-                return "<audio src='https://s3.amazonaws.com/yetihuntaudio/spear_throw.mp3'/> <audio src='https://s3.amazonaws.com/yetihuntaudio/spear_hits_wall.mp3'/> The hunter missed the yeti and is now defenseless. The game is over.";
+        if (this.didThrow) {
+            if (this.cave.getYetiCount() == 0) {
+                return spearHitAudio + " The spear hits the yeti! The yeti falls over dead and the hunter lives! <audio src='https://s3.amazonaws.com/yetihuntaudio/victory.mp3'/> The game is over. You win!";
+            }
+            else if (this.didHit) {
+                return spearHitAudio + " The spear hits the yeti! Keep hunting. There are still more yeti lurking in the cave.";
+            }
+            else if (this.spearCount == 0) {
+                return spearMissesAudio + " The hunter missed the yeti and is now defenseless. The game is over.";
+            }
+            else if (this.spearCount < this.cave.getYetiCount()) {
+                return spearMissesAudio + " The hunter missed the yeti. The hunter lacks enough spears to defeat the remaining yeti. The game is over.";
+            }
+            else {
+                return spearMissesAudio + " The hunter missed the yeti. Your spear count is dwindling. Keep going.";
             }
         }
     }
