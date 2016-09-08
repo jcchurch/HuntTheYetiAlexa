@@ -73,8 +73,6 @@ HuntTheYetiSkill.prototype.intentHandlers = {
 
 HuntTheYetiSkill.prototype.beginGame = function (session, response) {
     session.attributes.game = new HuntTheYetiGame();
-    var roomDescription = session.attributes.game.getRoomDescription();
-    var roomOpenings = session.attributes.game.getRoomOpenings();
 
     spearCount = "a spear";
     if (session.attributes.game.getSpearCount() > 1) {
@@ -82,11 +80,8 @@ HuntTheYetiSkill.prototype.beginGame = function (session, response) {
     }
 
     response.askSSML("The hunter, armed with "+spearCount+", is lost in a cave. Help the hunter escape. "
-                 + roomDescription
-                 + " "
-                 + roomOpenings
-                 ,
-                 roomOpenings);
+                 + getRoomDescriptionAndOpenings(session),
+                 getRoomDescriptionAndOpenings(session));
 };
 
 HuntTheYetiSkill.prototype.endGame = function (session, response) {
@@ -114,7 +109,8 @@ HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
                      + ". "
                      + getRoomDescriptionAndOpenings(session),
                      getRoomDescriptionAndOpenings(session));
-    } else {
+    }
+    else {
         response.askSSML(session.attributes.game.getRoomDescription()
             + " "
             + session.attributes.game.getConsequence()
@@ -183,6 +179,10 @@ function presentNewGameMessage(response) {
 }
 
 function getRoomDescriptionAndOpenings(session) {
+    if (session.attributes.game == null) {
+        return "";
+    }
+
     return session.attributes.game.getRoomDescription()
            + " "
            + session.attributes.game.getRoomOpenings();
