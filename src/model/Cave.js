@@ -193,14 +193,30 @@ Cave.prototype.launchSpear = function(aDirection) {
 
         if (spearCell != -1) {
             var yetiPosition = this.rooms[spearCell].indexOf("Yeti");
+
             if (yetiPosition != -1) {
-                this.rooms[spearCell].splice(yetiPosition, 1);
+                var row = this.getRow(spearCell);
+                var col = this.getCol(spearCell);
+                this.removeItem(row, col, "Yeti");
+                this.removeItem(row+1, col, "YetiSmell");
+                this.removeItem(row-1, col, "YetiSmell");
+                this.removeItem(row, col+1, "YetiSmell");
+                this.removeItem(row, col-1, "YetiSmell");
+
                 return true;
             }
         }
     }
 
     return false;
+};
+
+Cave.prototype.removeItem = function(row, col, item) {
+    var cell = this.getCell(row, col);
+    if (cell != -1) {
+        var itemPosition = this.rooms[cell].indexOf(item);
+        this.rooms[cell].splice(itemPosition, 1);
+    }
 };
 
 /**
