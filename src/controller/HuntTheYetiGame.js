@@ -32,6 +32,27 @@ var HuntTheYetiGame = function (previousGame) {
 };
 
 /**
+ * Returns the intro message.
+ *
+ * @precondition none
+ * @postcondition none
+ *
+ * @returns the intro message
+ */
+HuntTheYetiGame.prototype.getIntroduction = function () {
+    var spearCountEnglish = "a spear";
+    if (this.spearCount > 1) {
+        spearCountEnglish = this.spearCount + " spears";
+    }
+
+    return ["The hunter, armed with "
+            + spearCountEnglish
+            + ", is lost in a cave. Help the hunter escape. "
+            + this.getRoomDescriptionAndOpenings(),
+            this.getRoomDescriptionAndOpenings()];
+};
+
+/**
  * Returns the spear count.
  *
  * @precondition none
@@ -67,9 +88,23 @@ HuntTheYetiGame.prototype.isPlaying = function () {
  *                stored as well.
  */
 HuntTheYetiGame.prototype.moveHunter = function (aDirection) {
+    if (!this.isPlaying()) {
+        return presentGameOverMessage();
+    }
+
     this.didMove = this.cave.moveHunter(aDirection);
     this.consequence = this.cave.activateConsequence();
     this.didThrow = false;
+
+    if (this.isPlaying()) {
+        return [aDirection + ". " + this.getRoomDescriptionAndOpenings(),
+                this.getRoomDescriptionAndOpenings()];
+    }
+    else {
+        return [this.getRoomDescription() + " " + this.getConsequence()
+         + " If you would like to play again, say 'Begin Game' or say 'Stop'",
+         "The game is over. Say 'Begin Game' or 'Stop'."];
+    }
 };
 
 /**
@@ -81,10 +116,25 @@ HuntTheYetiGame.prototype.moveHunter = function (aDirection) {
  *                and the consequence is stored.
  */
 HuntTheYetiGame.prototype.launchSpear = function (aDirection) {
+    if (!this.isPlaying()) {
+        return presentGameOverMessage();
+    }
+
     this.spearCount -= 1;
     this.didHit = this.cave.launchSpear(aDirection);
     this.consequence = this.cave.activateConsequence();
     this.didThrow = true;
+
+    if (this.isPlaying()) {
+        return [this.getConsequence()
+                + " " + this.getRoomDescriptionAndOpenings(),
+                "Are you still there? " + this.getRoomDescriptionAndOpenings()];
+    }
+    else {
+        return [this.getConsequence()
+                + " If you would like to play again, say 'Begin Game' or say 'Stop'",
+                "The game is over. Say 'Begin Game' or 'Stop'."];
+    }
 };
 
 /**
@@ -148,7 +198,6 @@ HuntTheYetiGame.prototype.getConsequence = function () {
     var spearHitAudio = "<audio src='https://s3.amazonaws.com/yetihuntaudio/spear_throw.mp3'/> <audio src='https://s3.amazonaws.com/yetihuntaudio/yeti_death.mp3'/>";
     var spearMissesAudio = "<audio src='https://s3.amazonaws.com/yetihuntaudio/spear_throw.mp3'/> <audio src='https://s3.amazonaws.com/yetihuntaudio/spear_hits_wall.mp3'/>";
 
-
     if (this.consequence == "death") {
         return "The hunter has died. The game is over.";
     } else {
@@ -172,5 +221,34 @@ HuntTheYetiGame.prototype.getConsequence = function () {
     }
     return "";
 };
+
+/**
+ * Presents a "pause" message. The game state does not change.
+ *
+ * @precondition none
+ * @postcondition none
+ */
+HuntTheYetiGame.prototype.pause = function () {
+    var speechOutput = "I'll wait. ";
+    return [speechOutput + this.getRoomDescriptionAndOpenings(),
+            "Are you still there? " + this.getRoomDescriptionAndOpenings()];
+};
+
+/**
+ * Gets the room description and the openings.
+ *
+ * @precondition none
+ * @postcondition none
+ * @returns the room description and the openings.
+ */
+HuntTheYetiGame.prototype.getRoomDescriptionAndOpenings = function () {
+    return this.getRoomDescription() + " " + this.getRoomOpenings();
+}
+
+function presentGameOverMessage() {
+    var message = "The game is over. Say 'Begin Game' or 'Stop'.";
+    return [message, message];
+}
+
 
 module.exports = HuntTheYetiGame;
