@@ -53,18 +53,6 @@ HuntTheYetiGame.prototype.getIntroduction = function () {
 };
 
 /**
- * Returns the spear count.
- *
- * @precondition none
- * @postcondition none
- *
- * @returns the spear count.
- */
-HuntTheYetiGame.prototype.getSpearCount = function () {
-    return this.spearCount;
-};
-
-/**
  * Returns true if the player can still play, false otherwise.
  *
  * @precondition none
@@ -249,6 +237,5 @@ function presentGameOverMessage() {
     var message = "The game is over. Say 'Begin Game' or 'Stop'.";
     return [message, message];
 }
-
 
 module.exports = HuntTheYetiGame;
