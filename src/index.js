@@ -1,3 +1,22 @@
+/**
+
+This file is part of Hunt the Yeti.
+
+Hunt the Yeti is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 var APP_ID = "amzn1.ask.skill.cd76cca4-65d0-4df4-994e-49430b7ed7ed";
 
 var AlexaSkill = require('./AlexaSkill');
@@ -128,6 +147,10 @@ HuntTheYetiSkill.prototype.tellOverview = function (session, response) {
     var speechOutput = "In Yeti Hunt, you are a hunter, armed with a single spear, in a dark five by five room cave. There are bats, open pits, and a terrible Yeti. Your goal is to kill the Yeti with a single spear throw. To begin a new game, say 'Begin game'. To get help, say 'how to play'.";
     response.ask(speechOutput, getQuickHelp());
 };
+
+function validateDirection(aDirection) {
+    
+}
 
 function presentNewGameMessage(response) {
     response.ask("To start a game, say 'Begin Game'.",

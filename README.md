@@ -1,5 +1,9 @@
 # Hunt the Yeti skill for Amazon Echo
 
+## License 
+
+As of May 16, 2017, this code is distributed under the GPL. You may use the code under the GPL terms and conditions, [which are best explained here](https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3). The most notable requirement of the GPL is that you must disclose your source code. You may use this in a commercial product, but ultimately I want this to be an educational experience. 
+
 ## Overview
 
 Hunt the Yeti is an interpretation of Hunt the Wumpus, a classic game for teaching artificial intelligence. The game is played on a five-by-five grid of rooms called a cave. Scattered around the cave are:
