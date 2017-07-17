@@ -17,154 +17,81 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-var APP_ID = "amzn1.ask.skill.cd76cca4-65d0-4df4-994e-49430b7ed7ed";
-
-var AlexaSkill = require('./AlexaSkill');
+'use strict';
+const Alexa = require('alexa-sdk');
 var HuntTheYetiGame = require('./controller/HuntTheYetiGame');
 
-/**
- * HuntTheYetiSkill is a child of AlexaSkill.
- */
-var HuntTheYetiSkill = function () {
-    AlexaSkill.call(this, APP_ID);
+var APP_ID = "amzn1.ask.skill.cd76cca4-65d0-4df4-994e-49430b7ed7ed";
+
+var openingMessage = "Welcome to Yeti Hunt. Say 'Begin Game', or 'How to Play', or 'Overview'.";
+var openingMessageReprompt = "Say 'Begin Game', or 'How to Play', or 'Overview'.";
+var howToPlayMessage = "You move the hunter by saying 'move' and then any of the four cardinal directions (north, south, east, or west). To throw your only spear, say 'throw the spear' and then any cardinal direction. Once you throw the spear, the game is over. To begin a new game, say 'Begin game'. For an overview, say 'overview'.";
+var overviewMessage = "In Yeti Hunt, you are a hunter, armed with a single spear, in a dark five by five room cave. There are bats, open pits, and a terrible Yeti. Your goal is to kill the Yeti with a single spear throw. To begin a new game, say 'Begin game'. To get help, say 'how to play'.";
+var newGameMessage = "To start a new game, say 'begin game'.";
+var quickHelpMessage = "To begin a new game, say 'Begin game'. For an overview, say 'overview'. For help, say 'how to play'.";
+var endGameMessage = "Okay. Bye. Thanks for playing.";
+
+var beginGame = function () {
+    this.attributes['game'] = new HuntTheYetiGame();
+    var messages = this.attributes['game'].getIntroduction();
+    this.emit(':ask', messages[0], messages[1]);
 };
 
-// Extend AlexaSkill
-HuntTheYetiSkill.prototype = Object.create(AlexaSkill.prototype);
-HuntTheYetiSkill.prototype.constructor = HuntTheYetiSkill;
-
-HuntTheYetiSkill.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
-    session.attributes.game = null;
-
-    console.log("HuntTheYetiSkill onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-    var speechOutput = "Welcome to Yeti Hunt. Say 'Begin Game', or 'How to Play', or 'Overview'.";
-    var repromptOutput = "Say 'Begin Game', or 'How to Play', or 'Overview'.";
-    response.ask(speechOutput, repromptOutput);
-};
-
-HuntTheYetiSkill.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequest, session) {
-    console.log("HuntTheYetiSkill onSessionStarted requestId: " + sessionStartedRequest.requestId
-        + ", sessionId: " + session.sessionId);
-};
-
-HuntTheYetiSkill.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, session) {
-    console.log("HuntTheYeti onSessionEnded requestId: " + sessionEndedRequest.requestId
-        + ", sessionId: " + session.sessionId);
-};
-
-HuntTheYetiSkill.prototype.intentHandlers = {
-    "HowToPlay": function (intent, session, response) {
-        this.tellHowToPlay(session, response);
-    },
-
-    "Overview": function (intent, session, response) {
-        this.tellOverview(session, response);
-    },
-
-    "PauseGame": function (intent, session, response) {
-        this.pauseGame(session, response);
-    },
-
-    "BeginGame": function (intent, session, response) {
-        this.beginGame(session, response);
-    },
-
-    "MoveHunter": function (intent, session, response) {
-        this.moveHunter(intent, session, response);
-    },
-
-    "ThrowSpear": function (intent, session, response) {
-        this.throwSpear(intent, session, response);
-    },
-
-    "AMAZON.CancelIntent": function (intent, session, response) {
-        this.endGame(session, response);
-    },
-
-    "AMAZON.StopIntent": function (intent, session, response) {
-        this.endGame(session, response);
-    },
-
-    "AMAZON.HelpIntent": function (intent, session, response) {
-        this.tellHowToPlay(session, response);
-    }
-};
-
-HuntTheYetiSkill.prototype.beginGame = function (session, response) {
-    session.attributes.game = new HuntTheYetiGame();
-    var messages = session.attributes.game.getIntroduction();
-    response.askSSML(messages[0], messages[1]);
-};
-
-HuntTheYetiSkill.prototype.endGame = function (session, response) {
-    response.tellSSML("Okay. Bye. Thanks for playing.");
-};
-
-HuntTheYetiSkill.prototype.moveHunter = function (intent, session, response) {
-    if (session.attributes.game == null) {
-        presentNewGameMessage(response);
+var moveHunter = function () {
+    if (this.attributes['game'] == null) {
+        this.emit(':ask', newGameMessage, newGameMessage);
         return;
     }
 
-    session.attributes.game = new HuntTheYetiGame(session.attributes.game);
+    this.attributes['game'] = new HuntTheYetiGame(this.attributes['game']);
 
-    var aDirection = intent.slots.Direction.value;
-    var messages = session.attributes.game.moveHunter(aDirection);
-    response.askSSML(messages[0], messages[1]);
+    var aDirection = this.event.request.intent.slots.Direction.value;
+    var messages = this.attributes['game'].moveHunter(aDirection);
+    this.emit(':ask', messages[0], messages[1]);
 };
 
-HuntTheYetiSkill.prototype.throwSpear = function (intent, session, response) {
-    if (session.attributes.game == null) {
-        presentNewGameMessage(response);
+var throwSpear = function () {
+    if (this.attributes['game'] == null) {
+        this.emit(':ask', newGameMessage, newGameMessage);
         return;
     }
 
-    session.attributes.game = new HuntTheYetiGame(session.attributes.game);
+    this.attributes['game'] = new HuntTheYetiGame(this.attributes['game']);
 
-    var aDirection = intent.slots.Direction.value;
-    var messages = session.attributes.game.launchSpear(aDirection);
-    response.askSSML(messages[0], messages[1]);
+    var aDirection = this.event.request.intent.slots.Direction.value;
+    var messages = this.attributes['game'].launchSpear(aDirection);
+    this.emit(':ask', messages[0], messages[1]);
 };
 
-HuntTheYetiSkill.prototype.pauseGame = function (session, response) {
-    if (session.attributes.game == null) {
-        presentNewGameMessage(response);
+var pauseGame = function () {
+    if (this.attributes['game'] == null) {
+        this.emit(':ask', newGameMessage, newGameMessage);
         return;
     }
 
-    session.attributes.game = new HuntTheYetiGame(session.attributes.game);
+    this.attributes['game'] = new HuntTheYetiGame(this.attributes['game']);
 
-    var messages = session.attributes.game.pause();
-    response.askSSML(messages[0], messages[1]);
+    var messages = this.attributes['game'].pause();
+    this.emit(':ask', messages[0], messages[1]);
 };
 
-HuntTheYetiSkill.prototype.tellHowToPlay = function (session, response) {
-    var speechOutput = "You move the hunter by saying 'move' and then any of the four cardinal directions (north, south, east, or west). To throw your only spear, say 'throw the spear' and then any cardinal direction. Once you throw the spear, the game is over. To begin a new game, say 'Begin game'. For an overview, say 'overview'.";
-    response.ask(speechOutput, getQuickHelp());
+var handlers = {
+    "LaunchRequest": function () { this.emit(':ask', openingMessage, openingMessageReprompt) },
+    "HowToPlay": function () { this.emit(':ask', howToPlayMessage, quickHelpMessage); },
+    "Overview": function () { this.emit(':ask', overviewMessage, quickHelpMessage) },
+    "PauseGame": pauseGame,
+    "BeginGame": beginGame,
+    "MoveHunter": moveHunter,
+    "ThrowSpear": throwSpear,
+    "AMAZON.CancelIntent": function () { this.emit(':tell', endGameMessage) },
+    "AMAZON.StopIntent": function () { this.emit(':tell', endGameMessage) },
+    "AMAZON.HelpIntent": function () { this.emit(':ask', howToPlayMessage, quickHelpMessage) },
+    "Unhandled": function () { this.emit(':ask', howToPlayMessage, quickHelpMessage) }
 };
 
-HuntTheYetiSkill.prototype.tellOverview = function (session, response) {
-    var speechOutput = "In Yeti Hunt, you are a hunter, armed with a single spear, in a dark five by five room cave. There are bats, open pits, and a terrible Yeti. Your goal is to kill the Yeti with a single spear throw. To begin a new game, say 'Begin game'. To get help, say 'how to play'.";
-    response.ask(speechOutput, getQuickHelp());
+exports.handler = (event, context, callback) => {
+    var alexa = Alexa.handler(event, context);
+    alexa.APP_ID = APP_ID;
+    alexa.registerHandlers(handlers);
+    alexa.execute();
 };
-
-function validateDirection(aDirection) {
-    
-}
-
-function presentNewGameMessage(response) {
-    response.ask("To start a game, say 'Begin Game'.",
-                 "To start, say 'Begin Game'.");
-}
-
-function getQuickHelp() {
-    return "To begin a new game, say 'Begin game'. For an overview, say 'overview'. For help, say 'how to play'.";
-}
-
-// Create the handler that responds to the Alexa Request.
-exports.handler = function (event, context) {
-    // Create an instance of the HuntTheYetiSkill skill.
-    var huntTheYeti = new HuntTheYetiSkill();
-    huntTheYeti.execute(event, context);
-};
-
