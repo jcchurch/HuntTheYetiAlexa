@@ -25,11 +25,15 @@ Once the hunter has figured out the direction of the yeti, the hunter should thr
 
 ## Understanding This Code
 
-It is recommended that you study the [sample code provided by Amazon Echo Skill Team](https://github.com/amzn/alexa-skills-kit-js). There are several sample applications to help you get started.
+It is recommended that you study the [sample code provided by Amazon Echo Skill Team](https://github.com/alexa/skill-sample-nodejs-howto). 
 
 To prepare this project for uploading, move into the `src` folder.
 
     cd src
+
+Make sure that you install the `alexa-sdk` library using [node package manager](https://docs.npmjs.com/getting-started/installing-node).
+
+    npm install alexa-sdk
 
 Then zip the project.
 
