@@ -154,9 +154,11 @@ CaveView.prototype.getRoomOpenings = function() {
 
     roomDescription += this.t('openDirections');
     for (var i = 0; i < moves.length; i++) {
-        roomDescription = roomDescription + this.t("directions."+moves[i]) + ((i==moves.length-2) ? this.t('or') : ", ");
+        roomDescription = roomDescription + this.t("directions."+moves[i]);
+        if (i==moves.length-2) roomDescription += this.t('or');
+        if (i<moves.length-2) roomDescription += ", ";
     }
-
+    roomDescription += ".";
     return roomDescription;
 };
 
