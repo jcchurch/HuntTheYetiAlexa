@@ -1,0 +1,21 @@
+{
+  "name": "hunt-the-yeti-lambda-skills",
+  "version": "1.0.0",
+  "description": "Hunt the Yeti Alexa game",
+  "main": "index.js",
+  "dependencies": {
+    "ask-sdk": "^2.3.0",
+    "i18next": "^14.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "alexa",
+    "skill",
+    "game"
+  ],
+  "author": "Amazon.com",
+  "license": "GPLv3"
+}

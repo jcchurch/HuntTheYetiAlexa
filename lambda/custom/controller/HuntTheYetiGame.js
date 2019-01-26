@@ -27,8 +27,11 @@ var Cave =  require("../model/Cave");
  *
  * @precondition none
  * @postcondition the object is built
+ * @param t i18next.t translation function
+ * @param previousGame previous game in json format
  */
-var HuntTheYetiGame = function (previousGame) {
+var HuntTheYetiGame = function (t, previousGame) {
+    this.t = t;
     if (previousGame === undefined) {
         this.spearCount = 1;
         this.didMove = true;
@@ -59,14 +62,7 @@ var HuntTheYetiGame = function (previousGame) {
  * @returns the intro message
  */
 HuntTheYetiGame.prototype.getIntroduction = function () {
-    var spearCountEnglish = "a spear";
-    if (this.spearCount > 1) {
-        spearCountEnglish = this.spearCount + " spears";
-    }
-
-    return ["The hunter, armed with "
-            + spearCountEnglish
-            + ", is lost in a cave. Help the hunter escape. "
+    return [this.t("introMessage", {count: this.spearCount})
             + this.getRoomDescriptionAndOpenings(),
             this.getRoomDescriptionAndOpenings()];
 };
@@ -89,7 +85,7 @@ HuntTheYetiGame.prototype.isPlaying = function () {
 /**
  * Moves the hunter and activates the consequence.
  *
- * @precondition aDirection is a string: north, south, east, or west.
+ * @precondition aDirection is a string: NORTH, SOUTH, EAST, or WEST.
  * @postcondition the hunter moves and the consequence to this action
  *                is stored. If the hunter did move, that boolean is
  *                stored as well.
@@ -104,13 +100,13 @@ HuntTheYetiGame.prototype.moveHunter = function (aDirection) {
     this.didThrow = false;
 
     if (this.isPlaying()) {
-        return [aDirection + ". " + this.getRoomDescriptionAndOpenings(),
+        return [this.t("directions.confirmation." + aDirection) + ". " + this.getRoomDescriptionAndOpenings(),
                 this.getRoomDescriptionAndOpenings()];
     }
     else {
         return [this.getRoomDescription() + " " + this.getConsequence()
-         + " If you would like to play again, say 'Begin Game' or say 'Stop'",
-         "The game is over. Say 'Begin Game' or 'Stop'."];
+         + this.t("playAgainMessage"),
+         this.t("playAgainReprompt")];
     }
 };
 
@@ -118,7 +114,7 @@ HuntTheYetiGame.prototype.moveHunter = function (aDirection) {
  * Launches the spear in a particular direction. Internally, the hunter
  * no longer has a spear and the yeti may have died as a result.
  *
- * @precondition aDirection is a string: north, south, east, or west.
+ * @precondition aDirection is a string: nORTH, SOUTH, EAST, or WEST.
  * @postcondition this.spearCount is reduced by 1 (because ths spear is thrown)
  *                and the consequence is stored.
  */
@@ -135,12 +131,12 @@ HuntTheYetiGame.prototype.launchSpear = function (aDirection) {
     if (this.isPlaying()) {
         return [this.getConsequence()
                 + " " + this.getRoomDescriptionAndOpenings(),
-                "Are you still there? " + this.getRoomDescriptionAndOpenings()];
+                this.t("stillThereMessage") + this.getRoomDescriptionAndOpenings()];
     }
     else {
         return [this.getConsequence()
-                + " If you would like to play again, say 'Begin Game' or say 'Stop'",
-                "The game is over. Say 'Begin Game' or 'Stop'."];
+                + this.t("playAgainMessage"),
+                this.t("playAgainReprompt")];
     }
 };
 
@@ -157,15 +153,15 @@ HuntTheYetiGame.prototype.launchSpear = function (aDirection) {
  * @returns an English description of the room
  */
 HuntTheYetiGame.prototype.getRoomDescription = function () {
-    var view = new CaveView(this.cave);
+    var view = new CaveView(this.t, this.cave);
     var description = "";
 
     if (this.consequence == "random_location") {
-        description += "<audio src='https://s3.amazonaws.com/yetihuntaudio/bat_screech.mp3'/> Enormous bats have picked up and dropped the hunter in a different part of the cave. ";
+        description += this.t("consequencesDescriptions.random_location");
     }
 
     if (this.didMove == false) {
-        description += "<audio src='https://s3.amazonaws.com/yetihuntaudio/hunter_bumps_into_wall.mp3'/> The hunter bumps into a wall. ";
+        description += this.t("consequencesDescriptions.cannot_move");
     }
 
     description += view.getRoomDescription();
@@ -182,7 +178,7 @@ HuntTheYetiGame.prototype.getRoomDescription = function () {
  * @returns an English description of the room's openings
  */
 HuntTheYetiGame.prototype.getRoomOpenings = function () {
-    var view = new CaveView(this.cave);
+    var view = new CaveView(this.t, this.cave);
     return view.getRoomOpenings();
 };
 
@@ -202,27 +198,24 @@ HuntTheYetiGame.prototype.getRoomOpenings = function () {
  */
 HuntTheYetiGame.prototype.getConsequence = function () {
 
-    var spearHitAudio = "<audio src='https://s3.amazonaws.com/yetihuntaudio/spear_throw.mp3'/> <audio src='https://s3.amazonaws.com/yetihuntaudio/yeti_death.mp3'/>";
-    var spearMissesAudio = "<audio src='https://s3.amazonaws.com/yetihuntaudio/spear_throw.mp3'/> <audio src='https://s3.amazonaws.com/yetihuntaudio/spear_hits_wall.mp3'/>";
-
     if (this.consequence == "death") {
-        return "The hunter has died. The game is over.";
+        return this.t("consequencesDescriptions.death");
     } else {
         if (this.didThrow) {
             if (this.cave.getYetiCount() == 0) {
-                return spearHitAudio + " The spear hits the yeti! The yeti falls over dead and the hunter lives! <audio src='https://s3.amazonaws.com/yetihuntaudio/victory.mp3'/> The game is over. You win!";
+                return this.t("killYetiMessage");
             }
             else if (this.didHit) {
-                return spearHitAudio + " The spear hits the yeti! Keep hunting. There are still more yeti lurking in the cave.";
+                return this.t("didHit");
             }
             else if (this.spearCount == 0) {
-                return spearMissesAudio + " The hunter missed the yeti and is now defenseless. The game is over.";
+                return this.t("didMiss");
             }
             else if (this.spearCount < this.cave.getYetiCount()) {
-                return spearMissesAudio + " The hunter missed the yeti. The hunter lacks enough spears to defeat the remaining yeti. The game is over.";
+                return this.t("didMissOneAndLose");
             }
             else {
-                return spearMissesAudio + " The hunter missed the yeti. Your spear count is dwindling. Keep going.";
+                return this.t("didMissOne");
             }
         }
     }
@@ -236,9 +229,9 @@ HuntTheYetiGame.prototype.getConsequence = function () {
  * @postcondition none
  */
 HuntTheYetiGame.prototype.pause = function () {
-    var speechOutput = "I'll wait. ";
+    var speechOutput = this.t("IllWaitMessage");
     return [speechOutput + this.getRoomDescriptionAndOpenings(),
-            "Are you still there? " + this.getRoomDescriptionAndOpenings()];
+            this.t("IllWaitReprompt") + this.getRoomDescriptionAndOpenings()];
 };
 
 /**
@@ -253,7 +246,7 @@ HuntTheYetiGame.prototype.getRoomDescriptionAndOpenings = function () {
 }
 
 function presentGameOverMessage() {
-    var message = "The game is over. Say 'Begin Game' or 'Stop'.";
+    var message = this.t("gameOverMessage");
     return [message, message];
 }
 

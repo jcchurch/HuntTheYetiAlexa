@@ -34,7 +34,7 @@ function WhenSpearThrownWest_YetiMissed() {
                           [], [],         [],            [],            [] ],
                         5, 5);
 
-    var hitYeti = cave.launchSpear("west");
+    var hitYeti = cave.launchSpear("WEST");
     assert(!hitYeti, "Failed to miss yeti when throwing spear west");
 }
 
@@ -46,7 +46,7 @@ function WhenSpearThrownEast_YetiHit() {
                           [], [],         [],            [],            [] ],
                         5, 5);
 
-    var hitYeti = cave.launchSpear("east");
+    var hitYeti = cave.launchSpear("EAST");
     assert(hitYeti, "Failed to hit yeti when throwing spear east");
 }
 
@@ -58,7 +58,7 @@ function WhenSpearThrownEast_NoTraceOfYetiOrSmell() {
                           [], [],         [],            [],            [] ],
                         5, 5);
 
-    var hitYeti = cave.launchSpear("east");
+    var hitYeti = cave.launchSpear("EAST");
     var yetiLocation = cave.find("Yeti");
     var yetiSmellLocation = cave.find("YetiSmell");
 

@@ -97,15 +97,14 @@ Cave.prototype.getRoomObjects = function(cell) {
  * @precondition none
  * @postcondition none
  * 
- * @return an ArrayList of valid hunter moves
+ * @return an ArrayList of valid hunter moves, NORTH, SOUTH, etc.
  */
 Cave.prototype.getHunterMoves = function(hunterCell) {
     var hunterRow = this.getRow(hunterCell);
     var hunterCol = this.getCol(hunterCell);
 
     var validHunterMoves = [];
-    for (var i = 0; i < Direction.length; i++) {
-        var aDirection = Direction[i];
+    for (let aDirection of Direction.values) {
         var nextHunterCell = this.determineNextCell(aDirection, hunterRow, hunterCol);
         if (nextHunterCell != -1) {
             validHunterMoves.push(aDirection);
@@ -195,7 +194,7 @@ Cave.prototype.getRow = function(cell) {
  * Yeti (and returns true) or a wall (and returns false). It's up to the
  * game controller to decide if this is the end of the game.
  * 
- * @precondition aDirection is "north", "south", "east", "west"
+ * @precondition aDirection is "NORTH", "SOUTH", "EAST", "WEST"
  * @postcondition the yeti (if hit) is removed from the cave
  * 
  * @param aDirection
@@ -269,22 +268,21 @@ Cave.prototype.moveHunter = function(aDirection) {
 
 Cave.prototype.determineNextCell = function(aDirection, row, col) {
     var nextCell = -1;
-    if (aDirection == "north") {
+    if (aDirection === Direction.NORTH) {
         nextCell = this.getCell(row - 1, col);
     }
 
-    if (aDirection == "south") {
+    if (aDirection === Direction.SOUTH) {
         nextCell = this.getCell(row + 1, col);
     }
 
-    if (aDirection == "west") {
+    if (aDirection === Direction.WEST) {
         nextCell = this.getCell(row, col - 1);
     }
 
-    if (aDirection == "east") {
+    if (aDirection === Direction.EAST) {
         nextCell = this.getCell(row, col + 1);
     }
-
     return nextCell;
 };
 

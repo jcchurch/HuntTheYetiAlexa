@@ -1,0 +1,55 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "fr-FR": {
+          "summary": "Aidez un chasseur dans une grotte sombre à trouver le Yéti sans tomber dans les pièges",
+          "examplePhrases": [
+            "Alexa, lance Chasse au Yeti",
+            "Alexa, lance Chasse au Yeti et démarre une nouvelle partie",
+            "Va vers le Nord"
+          ],
+          "keywords": [
+            "jeu",
+            "labyrinthe",
+            "logique",
+            "yeti",
+            "déduction"
+          ],
+          "name": "Chasse au Yéti",
+          "description": "Chasse au Yéti est une adaptation du jeu Chasse au Wumpus (1972). Dans ce jeu, vous guidez un chasseur à travers une grotte sombre, pour découvrir l'emplacement du Yéti. Une fois le Yéti localisé, dites au chasseur de lancer son unique lance dans la direction du Yéti. Si vous avez correctement deviné, vous aurez permis au chasseur de vaincre le Yéti ! Sinon, le Yéti va finir par trouver le chasseur.\n\nDans cette version du jeu, le chasseur est perdu dans une grotte de 5 par 5. Il y a des fosses profondes, des chauves-souris géantes, et un seul Yéti. Vous entendrez les battements d'ailes des chauves-souris, sentirez le courant d'air des fosses ou l'odeur du Yéti affamé. Les chauves-souris transportent le chasseur vers un nouvel endroit (sûr) au hasard. Si le chasseur tombe dans une fosse, il meurt et le jeu est terminé. Si le chasseur marche jusqu'au Yéti, le Yéti attaque et le chasseur perd. Seul le chasseur se déplace, mais il n'a qu'une seule lance, donc faites en bon usage !\n\nFonctionnalités du jeu:\n- \"Nouveau jeu\": Démarre un nouveau jeu.\n- \"Comment jouer\": Rappel des règles du jeu.\n- \"Introduction\": Courte introduction du jeu Chasse au Yéti.\n- \"Pause\": Laisse un peu de temps au joueur pour penser.\n\nUne fois que le jeu a commencé, il y a deux actions à retenir :\n\n- \"Va vers [direction]\": Déplace le chasseur dans une direction donnée.\n- \"Attaque vers [direction]\": Envoie la lance dans une direction donnée.\n\nLa direction est toujours soit Nord, Sud, Est ou Ouest. Par exemple dites \"Va vers le Nord\". Le jeu vous indiquera quelles sont les directions possibles à chaque étape, mais ne vous dira pas ce qu'il y a dans chacune des pièces. C'est à vous d'utiliser un raisonnement logique pour déterminer la position du Yéti et des divers pièges. Bonne chance !\n\nVous pouvez aussi dire simplement une direction, comme \"Sud !\" et le chasseur ira dans cette direction. (Il semble difficile de déplacer le chasseur vers l'Est en disant simplement \"Est !\", donc préférez \"Va vers l'Est !\".)\n\nLe code source complet de la version française du jeu et les remerciements sont sur la page GitHub du jeu:\nhttps://github.com/amissemer/HuntTheYetiAlexa"
+        },
+        "fr-CA": {
+          "summary": "Aidez un chasseur dans une grotte sombre à trouver le Yéti sans tomber dans les pièges",
+          "examplePhrases": [
+            "Alexa, lance Chasse au Yeti",
+            "Alexa, lance Chasse au Yeti et démarre une nouvelle partie",
+            "Va vers le Nord"
+          ],
+          "keywords": [
+            "jeu",
+            "labyrinthe",
+            "logique",
+            "yeti",
+            "déduction"
+          ],
+          "name": "Chasse au Yéti",
+          "description": "Chasse au Yéti est une adaptation du jeu Chasse au Wumpus (1972). Dans ce jeu, vous guidez un chasseur à travers une grotte sombre, pour découvrir l'emplacement du Yéti. Une fois le Yéti localisé, dites au chasseur de lancer son unique lance dans la direction du Yéti. Si vous avez correctement deviné, vous aurez permis au chasseur de vaincre le Yéti ! Sinon, le Yéti va finir par trouver le chasseur.\n\nDans cette version du jeu, le chasseur est perdu dans une grotte de 5 par 5. Il y a des fosses profondes, des chauves-souris géantes, et un seul Yéti. Vous entendrez les battements d'ailes des chauves-souris, sentirez le courant d'air des fosses ou l'odeur du Yéti affamé. Les chauves-souris transportent le chasseur vers un nouvel endroit (sûr) au hasard. Si le chasseur tombe dans une fosse, il meurt et le jeu est terminé. Si le chasseur marche jusqu'au Yéti, le Yéti attaque et le chasseur perd. Seul le chasseur se déplace, mais il n'a qu'une seule lance, donc faites en bon usage !\n\nFonctionnalités du jeu:\n- \"Nouveau jeu\": Démarre un nouveau jeu.\n- \"Comment jouer\": Rappel des règles du jeu.\n- \"Introduction\": Courte introduction du jeu Chasse au Yéti.\n- \"Pause\": Laisse un peu de temps au joueur pour penser.\n\nUne fois que le jeu a commencé, il y a deux actions à retenir :\n\n- \"Va vers [direction]\": Déplace le chasseur dans une direction donnée.\n- \"Attaque vers [direction]\": Envoie la lance dans une direction donnée.\n\nLa direction est toujours soit Nord, Sud, Est ou Ouest. Par exemple dites \"Va vers le Nord\". Le jeu vous indiquera quelles sont les directions possibles à chaque étape, mais ne vous dira pas ce qu'il y a dans chacune des pièces. C'est à vous d'utiliser un raisonnement logique pour déterminer la position du Yéti et des divers pièges. Bonne chance !\n\nVous pouvez aussi dire simplement une direction, comme \"Sud !\" et le chasseur ira dans cette direction. (Il semble difficile de déplacer le chasseur vers l'Est en disant simplement \"Est !\", donc préférez \"Va vers l'Est !\".)\n\nLe code source complet de la version française du jeu et les remerciements sont sur la page GitHub du jeu:\nhttps://github.com/amissemer/HuntTheYetiAlexa"
+        }
+      },
+      "isAvailableWorldwide": true,
+      "testingInstructions": "Sample Testing Instructions.",
+      "category": "GAMES",
+      "distributionCountries": []
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "sourceDir": "lambda/custom"
+        }
+      }
+    },
+    "manifestVersion": "1.0",
+    "permissions": []
+  }
+}

@@ -17,4 +17,33 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-module.exports = ["north", "south", "east", "west"];
+module.exports = {
+    "Bat": {
+        effect: "BatSounds",
+        consequence: "random_location"
+    },
+    "BatSounds": {
+        effect: null,
+        consequence: ""
+    },
+    "Pit": {
+        effect: "PitDraft",
+        consequence: "death"
+    },
+    "PitDraft": {
+        effect: null,
+        consequence: ""
+    },
+    "Yeti": {
+        effect: "YetiSmell",
+        consequence: "death"
+    },
+    "YetiSmell": {
+        effect: null,
+        consequence: ""
+    },
+    "Hunter": {
+        effect: null,
+        consequence: ""
+    }
+};

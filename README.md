@@ -25,27 +25,21 @@ Once the hunter has figured out the direction of the yeti, the hunter should thr
 
 ## Understanding This Code
 
-It is recommended that you study the [sample code provided by Amazon Echo Skill Team](https://github.com/alexa/skill-sample-nodejs-howto). 
-
-To prepare this project for uploading, move into the `src` folder.
-
-    cd src
-
-Make sure that you install the `alexa-sdk` library using [node package manager](https://docs.npmjs.com/getting-started/installing-node).
-
-    npm install alexa-sdk
-
-Then zip the project.
-
-    zip -r yeti.zip *
-
-Then upload the zip file produced.
+This skill uses the [Alexa Skills Kit SDK for Node.js](https://github.com/alexa/alexa-skills-kit-sdk-for-nodejs). It is recommended you study the [Hello World Skill](https://github.com/alexa/skill-sample-nodejs-hello-world) for usage and deployment instructions.
 
 ## Attributions
 
 ### Game itself.
 
 This game is based on Hunt the Wumpus (MIT, 1972).
+
+### Alexa adaptation
+
+James Church, in https://github.com/jcchurch/HuntTheYetiAlexa
+
+### French localization
+
+Adrien Missemer, in https://github.com/amissemer/HuntTheYetiAlexa
 
 ### Icon
 

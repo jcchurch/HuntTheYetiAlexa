@@ -1,2 +1,4 @@
 *.zip
 *.swp
+lambda/custom/node_modules
+.vscode

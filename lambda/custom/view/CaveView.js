@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-
 var RoomObjects = require('../model/RoomObjects');
 
 /**
@@ -25,8 +24,10 @@ var RoomObjects = require('../model/RoomObjects');
  * 
  * @precondition a Cave object.
  * @postcondition the Cave object is saved.
+ * @param t i18next.t translation function
  */
-function CaveView(cave) {
+function CaveView(t, cave) {
+    this.t = t;
     this.cave = cave;
 };
 
@@ -62,9 +63,9 @@ CaveView.prototype.toString = function() {
     caveRepresentation += this.getRoomDescription();
     caveRepresentation += "\n\n";
 
-    caveRepresentation += "The hunter may move ";
+    caveRepresentation += this.t('hunterMayMoveMessage');
     for (var i = 0; i < moves.length; i++) {
-        caveRepresentation += moves[i] + " ";
+        caveRepresentation += this.t('directions.' + moves[i]) + " ";
     }
     caveRepresentation += "\n\n";
 
@@ -72,12 +73,12 @@ CaveView.prototype.toString = function() {
 };
 
 /**
- * Gets the description of the room.
+ * Gets the localized description of the room.
  *
  * @precondition: none
  * @postcondition: none
  * 
- * @return An English description of the room.
+ * @return A localized description of the room.
  */
 CaveView.prototype.getRoomDescription = function() {
     var hunterCell = this.cave.find("Hunter");
@@ -97,7 +98,7 @@ CaveView.prototype.getRoomDescription = function() {
  * @precondition: the hunter's current cell
  * @postcondition: none
  * 
- * @return An English description of the room.
+ * @return A localized description of the room.
  */
 CaveView.prototype.getLivingDescriptions = function(hunterCell) {
     var livingDescription = "";
@@ -105,12 +106,12 @@ CaveView.prototype.getLivingDescriptions = function(hunterCell) {
     for (var j = 0; j < allRoomObjects.length; j++) { 
         var aRoomObject = allRoomObjects[j];
         if (aRoomObject != "Hunter") {
-            livingDescription += RoomObjects[aRoomObject].description + " ";
+            livingDescription += this.t('objectsDescriptions.' + aRoomObject) + " ";
         }
     }
 
     if (allRoomObjects.length == 1) {
-        livingDescription += "The hunter does not sense anything near. ";
+        livingDescription += this.t('hunterSensesNothing');
     }
 
     return livingDescription;
@@ -123,7 +124,7 @@ CaveView.prototype.getLivingDescriptions = function(hunterCell) {
  * @precondition: the hunter's current cell
  * @postcondition: none
  * 
- * @return An English description of the room.
+ * @return A localized description of the room.
  */
 CaveView.prototype.getDeathDescriptions = function(hunterCell) {
     var deathDescription = "";
@@ -131,7 +132,7 @@ CaveView.prototype.getDeathDescriptions = function(hunterCell) {
     for (var j = 0; j < allRoomObjects.length; j++) { 
         var aRoomObject = allRoomObjects[j];
         if (RoomObjects[aRoomObject].consequence == "death") {
-            deathDescription += RoomObjects[aRoomObject].description + " ";
+            deathDescription += this.t('objectsDescriptions.' + aRoomObject) + " ";
         }
     }
 
@@ -139,21 +140,21 @@ CaveView.prototype.getDeathDescriptions = function(hunterCell) {
 };
 
 /**
- * Builds an English description of open rooms.
+ * Builds a localized description of open rooms.
  *
  * @precondition: none
  * @postcondition: none
  * 
- * @return An English description of open rooms.
+ * @return A localized description of open rooms.
  */
 CaveView.prototype.getRoomOpenings = function() {
     var hunterCell = this.cave.find("Hunter");
     var moves = this.cave.getHunterMoves(hunterCell);
     var roomDescription = "";
 
-    roomDescription += "Rooms are open ";
+    roomDescription += this.t('openDirections');
     for (var i = 0; i < moves.length; i++) {
-        roomDescription += moves[i] + ", ";
+        roomDescription = roomDescription + this.t("directions."+moves[i]) + ((i==moves.length-2) ? this.t('or') : ", ");
     }
 
     return roomDescription;

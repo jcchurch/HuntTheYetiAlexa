@@ -1,0 +1,134 @@
+{
+    "interactionModel": {
+      "languageModel": {
+        "invocationName": "yeti hunt game",
+        "intents": [{
+            "name": "AMAZON.CancelIntent"
+          },
+          {
+            "name": "AMAZON.HelpIntent"
+          },
+          {
+            "name": "AMAZON.RepeatIntent"
+          },
+          {
+            "name": "AMAZON.StartOverIntent"
+          },
+          {
+            "name": "AMAZON.StopIntent"
+          },
+          {
+            "name": "HowToPlay",
+            "samples": [
+              "how to play",
+              "rules"
+            ]
+          },
+          {
+            "name": "Overview",
+            "samples": [
+              "overview"
+            ]
+          },
+          {
+            "name": "BeginGame",
+            "samples": [
+              "begin",
+              "begin game",
+              "begin a game",
+              "begin the game",
+              "start",
+              "start game",
+              "start a game",
+              "start the game",
+              "new game"
+            ]
+          },
+          {
+            "name": "PauseGame",
+            "samples": [
+                "delay",
+                "wait",
+                "wait a tic",
+                "wait a second",
+                "wait a moment",
+                "pause",
+                "pause for a moment",
+                "hold up",
+                "hold on",
+                "I need more time"
+            ]
+          },
+          {
+            "name": "MoveHunter",
+            "samples": [
+                "move the hunter {direction}",
+                "step towards the {direction}",
+                "walk towards the {direction}",
+                "walk {direction}",
+                "move {direction}",
+                "step {direction}",
+                "go {direction}",
+                "{direction}"
+            ],
+            "slots": [{
+              "name": "direction",
+              "type": "DIRECTION"
+            }]
+          },
+          {
+            "name": "ThrowSpear",
+            "samples": [
+                "throw the spear {direction}",
+                "throw a spear {direction}",
+                "throw my spear {direction}",
+                "throw {direction}",
+                "launch the spear {direction}",
+                "launch a spear {direction}",
+                "launch my spear {direction}",
+                "launch {direction}",
+                "hurl the spear {direction}",
+                "hurl a spear {direction}",
+                "hurl my spear {direction}",
+                "hurl {direction}",
+                "attack {direction}"
+            ],
+            "slots": [{
+              "name": "direction",
+              "type": "DIRECTION"
+            }]
+          }
+        ],
+        "types": [{
+            "name": "DIRECTION",
+            "values": [ {
+              "id": "NORTH",
+              "name": {
+                "value": "north",
+                "synonyms": ["the north"]
+              }
+            },{
+              "id": "SOUTH",
+              "name": {
+                "value": "south",
+                "synonyms": ["the south"]
+              }
+            },{
+              "id": "WEST",
+              "name": {
+                "value": "west",
+                "synonyms": ["the west"]
+              }
+            },{
+              "id": "EAST",
+              "name": {
+                "value": "east",
+                "synonyms": ["the east"]
+              }
+            }]
+          }
+        ]
+      }
+    }
+  }
+  
