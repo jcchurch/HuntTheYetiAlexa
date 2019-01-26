@@ -1,132 +1,282 @@
 {
   "interactionModel": {
-    "languageModel": {
-      "invocationName": "chasse au yéti",
-      "intents": [{
-          "name": "AMAZON.CancelIntent"
-        },
-        {
-          "name": "AMAZON.HelpIntent"
-        },
-        {
-          "name": "AMAZON.RepeatIntent"
-        },
-        {
-          "name": "AMAZON.StartOverIntent"
-        },
-        {
-          "name": "AMAZON.StopIntent"
-        },
-        {
-          "name": "HowToPlay",
-          "samples": [
-            "comment jouer",
-            "règles",
-            "explique les règles",
-            "quelles sont les règles",
-            "explique"
-          ]
-        },
-        {
-          "name": "Overview",
-          "samples": [
-            "introduction"
-          ]
-        },
-        {
-          "name": "BeginGame",
-          "samples": [
-            "commence",
-            "commence jeu",
-            "commence une partie",
-            "commence une nouvelle partie",
-            "commence un nouveau jeu",
-            "commence la partie",
-            "démarre",
-            "démarre jeu",
-            "démarre le jeu",
-            "démarre la partie",
-            "démarre un nouveau jeu",
-            "nouvelle partie",
-            "nouveau jeu"
-          ]
-        },
-        {
-          "name": "PauseGame",
-          "samples": [
-              "attend",
-              "attend une seconde",
-              "attend un moment",
-              "un moment",
-              "pause",
-              "arrête",
-              "une seconde",
-              "j'ai besoin de plus de temps"
-          ]
-        },
-        {
-          "name": "MoveHunter",
-          "samples": [
-              "déplace le chasseur vers {direction}",
-              "avance vers {direction}",
-              "marche vers {direction}",
-              "avance {direction}",
-              "va vers {direction}",
-              "{direction}"
+      "languageModel": {
+          "invocationName": "chasse au yéti",
+          "intents": [
+              {
+                  "name": "AMAZON.CancelIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.HelpIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.RepeatIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.StartOverIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.StopIntent",
+                  "samples": []
+              },
+              {
+                  "name": "HowToPlay",
+                  "slots": [],
+                  "samples": [
+                      "comment jouer",
+                      "règles",
+                      "explique les règles",
+                      "quelles sont les règles",
+                      "explique"
+                  ]
+              },
+              {
+                  "name": "Overview",
+                  "slots": [],
+                  "samples": [
+                      "introduction"
+                  ]
+              },
+              {
+                  "name": "BeginGame",
+                  "slots": [],
+                  "samples": [
+                      "commence",
+                      "commence jeu",
+                      "commence une partie",
+                      "commence une nouvelle partie",
+                      "commence un nouveau jeu",
+                      "commence la partie",
+                      "démarre",
+                      "démarre jeu",
+                      "démarre le jeu",
+                      "démarre la partie",
+                      "démarre un nouveau jeu",
+                      "nouvelle partie",
+                      "nouveau jeu"
+                  ]
+              },
+              {
+                  "name": "PauseGame",
+                  "slots": [],
+                  "samples": [
+                      "attend",
+                      "attend une seconde",
+                      "attend un moment",
+                      "un moment",
+                      "pause",
+                      "arrête",
+                      "une seconde",
+                      "j'ai besoin de plus de temps"
+                  ]
+              },
+              {
+                  "name": "MoveHunter",
+                  "slots": [
+                      {
+                          "name": "direction",
+                          "type": "DIRECTION",
+                          "samples": [
+                              "va vers {direction}",
+                              "vers {direction} ",
+                              " {direction} "
+                          ]
+                      }
+                  ],
+                  "samples": [
+                      "avance",
+                      "déplace le chasseur vers {direction}",
+                      "avance vers {direction}",
+                      "marche vers {direction}",
+                      "avance {direction}",
+                      "va vers {direction}",
+                      "{direction}"
+                  ]
+              },
+              {
+                  "name": "ThrowSpear",
+                  "slots": [
+                      {
+                          "name": "direction",
+                          "type": "DIRECTION",
+                          "samples": [
+                              "vers {direction}",
+                              "{direction}"
+                          ]
+                      }
+                  ],
+                  "samples": [
+                      "lance",
+                      "attaque",
+                      "tire",
+                      "envoie la lance vers {direction}",
+                      "envoie une lance vers {direction}",
+                      "envoie ma lance vers {direction}",
+                      "tire la lance vers {direction}",
+                      "tire une lance vers {direction}",
+                      "tire vers {direction}",
+                      "lance vers {direction}",
+                      "lance {direction}",
+                      "attaque vers {direction}",
+                      "attaque {direction}"
+                  ]
+              },
+              {
+                  "name": "AMAZON.NavigateHomeIntent",
+                  "samples": []
+              }
           ],
-          "slots": [{
-            "name": "direction",
-            "type": "DIRECTION"
-          }]
-        },
-        {
-          "name": "ThrowSpear",
-          "samples": [
-              "envoie la lance vers {direction}",
-              "envoie une lance vers {direction}",
-              "envoie ma lance vers {direction}",
-              "tire la lance vers {direction}",
-              "tire une lance vers {direction}",
-              "tire vers {direction}",
-              "lance vers {direction}",
-              "lance {direction}",
-              "attaque vers {direction}",
-              "attaque {direction}"
+          "types": [
+              {
+                  "name": "DIRECTION",
+                  "values": [
+                      {
+                          "id": "NORTH",
+                          "name": {
+                              "value": "nord",
+                              "synonyms": [
+                                  "le nord"
+                              ]
+                          }
+                      },
+                      {
+                          "id": "SOUTH",
+                          "name": {
+                              "value": "sud",
+                              "synonyms": [
+                                  "le sud"
+                              ]
+                          }
+                      },
+                      {
+                          "id": "WEST",
+                          "name": {
+                              "value": "ouest",
+                              "synonyms": [
+                                  "l'ouest"
+                              ]
+                          }
+                      },
+                      {
+                          "id": "EAST",
+                          "name": {
+                              "value": "est",
+                              "synonyms": [
+                                  "l'est"
+                              ]
+                          }
+                      }
+                  ]
+              }
+          ]
+      },
+      "dialog": {
+          "intents": [
+              {
+                  "name": "MoveHunter",
+                  "delegationStrategy": "ALWAYS",
+                  "confirmationRequired": false,
+                  "prompts": {},
+                  "slots": [
+                      {
+                          "name": "direction",
+                          "type": "DIRECTION",
+                          "confirmationRequired": false,
+                          "elicitationRequired": true,
+                          "prompts": {
+                              "elicitation": "Elicit.Slot.362965557670.479922418155"
+                          },
+                          "validations": [
+                              {
+                                  "type": "hasEntityResolutionMatch",
+                                  "prompt": "Slot.Validation.362965557670.479922418155.356767565868"
+                              }
+                          ]
+                      }
+                  ]
+              },
+              {
+                  "name": "ThrowSpear",
+                  "confirmationRequired": false,
+                  "prompts": {},
+                  "slots": [
+                      {
+                          "name": "direction",
+                          "type": "DIRECTION",
+                          "confirmationRequired": false,
+                          "elicitationRequired": true,
+                          "prompts": {
+                              "elicitation": "Elicit.Slot.909541768149.195408642582"
+                          },
+                          "validations": [
+                              {
+                                  "type": "hasEntityResolutionMatch",
+                                  "prompt": "Slot.Validation.909541768149.195408642582.1001054587464"
+                              }
+                          ]
+                      }
+                  ]
+              }
           ],
-          "slots": [{
-            "name": "direction",
-            "type": "DIRECTION"
-          }]
-        }
-      ],
-      "types": [{
-        "name": "DIRECTION",
-        "values": [ {
-          "id": "NORTH",
-          "name": {
-            "value": "nord",
-            "synonyms": ["le nord"]
+          "delegationStrategy": "ALWAYS"
+      },
+      "prompts": [
+          {
+              "id": "Slot.Validation.362965557670.479922418155.356767565868",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "Dans quelle direction ?"
+                  },
+                  {
+                      "type": "PlainText",
+                      "value": "Dans quelle direction le chasseur doit-il aller ?"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.362965557670.479922418155",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "Dans quelle direction le chasseur doit-il aller ?"
+                  },
+                  {
+                      "type": "PlainText",
+                      "value": "Dans quelle direction ?"
+                  }
+              ]
+          },
+          {
+              "id": "Elicit.Slot.909541768149.195408642582",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "Dans quelle direction le chasseur doit-il envoyer la lance ?"
+                  },
+                  {
+                      "type": "PlainText",
+                      "value": "Dans quelle direction ?"
+                  }
+              ]
+          },
+          {
+              "id": "Slot.Validation.909541768149.195408642582.1001054587464",
+              "variations": [
+                  {
+                      "type": "PlainText",
+                      "value": "Dans quelle direction le chasseur doit-il envoyer la lance ?"
+                  },
+                  {
+                      "type": "PlainText",
+                      "value": "Dans quelle direction ?"
+                  }
+              ]
           }
-        },{
-          "id": "SOUTH",
-          "name": {
-            "value": "sud",
-            "synonyms": ["le sud"]
-          }
-        },{
-          "id": "WEST",
-          "name": {
-            "value": "ouest",
-            "synonyms": ["l'ouest"]
-          }
-        },{
-          "id": "EAST",
-          "name": {
-            "value": "est",
-            "synonyms": ["l'est"]
-          }
-        }]
-    }]
-    }
+      ]
   }
 }
